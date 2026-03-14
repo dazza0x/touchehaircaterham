@@ -1,48 +1,131 @@
 {
   "hours": [
-    {"day": "Monday",    "opens": "9:00am", "closes": "5:00pm", "closed": false},
-    {"day": "Tuesday",   "opens": "9:00am", "closes": "6:00pm", "closed": false},
-    {"day": "Wednesday", "opens": "9:00am", "closes": "9:00pm", "closed": false},
-    {"day": "Thursday",  "opens": "9:00am", "closes": "9:00pm", "closed": false},
-    {"day": "Friday",    "opens": "9:00am", "closes": "6:00pm", "closed": false},
-    {"day": "Saturday",  "opens": "8:00am", "closes": "5:00pm", "closed": false},
-    {"day": "Sunday",    "opens": "",       "closes": "",        "closed": true}
+    {
+      "day": "Monday",
+      "opens": "9:00am",
+      "closes": "5:00pm",
+      "closed": false
+    },
+    {
+      "day": "Tuesday",
+      "opens": "9:00am",
+      "closes": "6:00pm",
+      "closed": false
+    },
+    {
+      "day": "Wednesday",
+      "opens": "9:00am",
+      "closes": "9:00pm",
+      "closed": false
+    },
+    {
+      "day": "Thursday",
+      "opens": "9:00am",
+      "closes": "9:00pm",
+      "closed": false
+    },
+    {
+      "day": "Friday",
+      "opens": "9:00am",
+      "closes": "6:00pm",
+      "closed": false
+    },
+    {
+      "day": "Saturday",
+      "opens": "8:00am",
+      "closes": "5:00pm",
+      "closed": false
+    },
+    {
+      "day": "Sunday",
+      "opens": "",
+      "closes": "",
+      "closed": true
+    }
   ],
   "services": [
     {
       "id": "cutting",
       "title": "Cutting & Styling",
       "items": [
-        {"name": "Ladies Cut & Finish",  "note": "Shampoo, cut and blow dry", "price": "from £40"},
-        {"name": "Gents Cut & Finish",   "note": "Shampoo, cut and style",    "price": "from £30"},
-        {"name": "Blow Dry — Short",     "note": "",                           "price": "from £25"},
-        {"name": "Blow Dry — Long",      "note": "",                           "price": "from £28"}
+        {
+          "name": "Ladies Cut & Finish",
+          "note": "Shampoo, cut and blow dry",
+          "price": "from £40"
+        },
+        {
+          "name": "Gents Cut & Finish",
+          "note": "Shampoo, cut and style",
+          "price": "from £30"
+        },
+        {
+          "name": "Blow Dry — Short",
+          "note": "",
+          "price": "from £25"
+        },
+        {
+          "name": "Blow Dry — Long",
+          "note": "",
+          "price": "from £28"
+        }
       ]
     },
     {
       "id": "colouring",
       "title": "Hair Colouring",
       "items": [
-        {"name": "Colour Regrowth",      "note": "Root colour application",                         "price": "from £59"},
-        {"name": "Semi-Permanent Colour","note": "All-over tone or refresh",                        "price": "from £73"},
-        {"name": "Highlighting",         "note": "Foils, T-section or full head",                   "price": "from £72"},
-        {"name": "Ultimate Balayage",    "note": "Hand-painted, sun-kissed colour with toning",     "price": "from £155"}
+        {
+          "name": "Colour Regrowth",
+          "note": "Root colour application",
+          "price": "from £65"
+        },
+        {
+          "name": "Semi-Permanent Colour",
+          "note": "All-over tone or refresh",
+          "price": "from £76"
+        },
+        {
+          "name": "Highlighting",
+          "note": "Foils, T-section or full head",
+          "price": "from £79"
+        },
+        {
+          "name": "Ultimate Balayage",
+          "note": "Hand-painted, sun-kissed colour with toning",
+          "price": "from £161.50"
+        }
       ]
     },
     {
       "id": "smoothing",
       "title": "Smoothing & Straightening",
       "items": [
-        {"name": "Smoothing / Straightening Treatment", "note": "The Crown Professional keratin system — up to 6 months' frizz-free results", "price": "from £200"},
-        {"name": "Perming",              "note": "Full perm or body wave",                          "price": "from £70"}
+        {
+          "name": "Smoothing / Straightening Treatment",
+          "note": "The Crown Professional keratin system — up to 6 months' frizz-free results",
+          "price": "from £220"
+        },
+        {
+          "name": "Perming",
+          "note": "Full perm or body wave",
+          "price": "from £70"
+        }
       ]
     },
     {
       "id": "treatments",
       "title": "Treatments & Extensions",
       "items": [
-        {"name": "Luxury Hair Treatment","note": "Intensive conditioning with Organethic Pure Care or Oligo Professionnel", "price": "from £20"},
-        {"name": "Hair Extensions",      "note": "Consultation required — price on application",    "price": "POA"}
+        {
+          "name": "Luxury Hair Treatment",
+          "note": "Intensive conditioning with Organethic Pure Care or Oligo Professionnel",
+          "price": "from £20"
+        },
+        {
+          "name": "Hair Extensions",
+          "note": "Consultation required — price on application",
+          "price": "POA"
+        }
       ]
     }
   ],

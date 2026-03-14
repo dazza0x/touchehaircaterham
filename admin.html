@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Touché Hairdressing</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="Images/favicon.ico">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1410;
+      --surface:   #182018;
+      --surface2:  #1e261e;
+      --border:    rgba(127,184,150,0.15);
+      --green:     #7fb896;
+      --green-d:   #4d7e63;
+      --green-l:   #a3cdb5;
+      --text:      #e8eeea;
+      --text-muted:#8aab96;
+      --danger:    #c0392b;
+      --danger-d:  #922b21;
+      --white:     #ffffff;
+      --radius:    10px;
+      --sidebar-w: 230px;
+    }
+
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+
+    /* ── Gate ── */
+    #gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+    .gate-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 380px; text-align: center; }
+    .gate-logo { font-size: 1.6rem; font-weight: 700; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+    .gate-logo span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--green); letter-spacing: 0.12em; text-transform: uppercase; }
+    .gate-msg { color: var(--text-muted); margin: 1.5rem 0 1rem; font-size: 0.9rem; }
+    .gate-box input[type="password"] { width: 100%; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 1rem; outline: none; margin-bottom: 0.75rem; }
+    .gate-box input[type="password"]:focus { border-color: var(--green); }
+    .gate-error { color: #e57373; font-size: 0.85rem; min-height: 1.2em; margin-top: 0.5rem; }
+    .gate-note  { color: var(--text-muted); font-size: 0.78rem; margin-top: 1rem; line-height: 1.5; }
+
+    /* ── Layout ── */
+    #admin { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; }
+    .sidebar-logo { font-size: 1.25rem; font-weight: 700; color: var(--white); padding: 0 0.5rem 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .sidebar-logo span { display: block; font-size: 0.65rem; font-weight: 400; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+    .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+    .nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.65rem 0.75rem; border-radius: 8px; border: none; background: none; color: var(--text-muted); cursor: pointer; width: 100%; text-align: left; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+    .nav-item:hover  { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(127,184,150,0.12); color: var(--green); }
+    .nav-item svg    { width: 16px; height: 16px; flex-shrink: 0; }
+    .sidebar-footer  { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem; }
+    .btn-publish { background: var(--green); color: var(--bg); border: none; border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.15s; }
+    .btn-publish:hover { background: var(--green-l); }
+    .btn-publish:disabled { opacity: 0.5; cursor: default; }
+    .publish-status { font-size: 0.75rem; color: var(--text-muted); text-align: center; min-height: 1.2em; }
+    .btn-logout { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 1rem; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; width: 100%; }
+    .btn-logout:hover { border-color: var(--text-muted); color: var(--text); }
+
+    /* ── Content area ── */
+    .content { margin-left: var(--sidebar-w); flex: 1; padding: 2rem; max-width: 860px; }
+    .tab { display: none; }
+    .tab.active { display: block; }
+    .tab-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .tab-header h1 { font-size: 1.4rem; font-weight: 700; }
+    .tab-header p  { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem; }
+
+    /* ── Buttons ── */
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.1rem; border-radius: 8px; border: none; font-size: 0.88rem; cursor: pointer; font-weight: 500; transition: background 0.15s; }
+    .btn-primary { background: var(--green); color: var(--bg); }
+    .btn-primary:hover { background: var(--green-l); }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: var(--danger-d); }
+    .btn-ghost { background: none; border: 1px solid var(--border); color: var(--text-muted); }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+    .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+
+    /* ── Hours editor ── */
+    .hours-grid { display: grid; gap: 0.5rem; }
+    .hours-row { display: grid; grid-template-columns: 100px 1fr 1fr 80px; gap: 0.75rem; align-items: center; padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .hours-day  { font-weight: 500; font-size: 0.9rem; }
+    .hours-row input[type="text"] { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-size: 0.88rem; outline: none; }
+    .hours-row input[type="text"]:focus { border-color: var(--green); }
+    .hours-row input:disabled { opacity: 0.35; }
+    .hours-closed { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; color: var(--text-muted); justify-content: flex-end; }
+    .hours-closed input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; cursor: pointer; }
+
+    /* ── Services editor ── */
+    .service-cat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden; }
+    .service-cat-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
+    .service-cat-title { flex: 1; background: transparent; border: none; color: var(--text); font-size: 1rem; font-weight: 600; outline: none; }
+    .service-cat-title:focus { border-bottom: 1px solid var(--green); }
+    .service-items { padding: 0.5rem; }
+    .service-item { display: grid; grid-template-columns: 1fr 1fr 110px 36px; gap: 0.5rem; align-items: start; padding: 0.5rem; border-radius: 6px; transition: background 0.1s; }
+    .service-item:hover { background: var(--surface2); }
+    .service-item input { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-size: 0.85rem; outline: none; width: 100%; }
+    .service-item input:focus { border-color: var(--green); }
+    .service-item input.note-input { font-size: 0.78rem; color: var(--text-muted); }
+    .service-item input.price-input { font-weight: 500; color: var(--green-l); }
+    .add-item-row { padding: 0.5rem; }
+    .add-cat-row { margin-top: 0.5rem; }
+
+    /* ── Posts list ── */
+    .posts-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .post-row { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: border-color 0.15s; }
+    .post-row:hover { border-color: var(--green); }
+    .post-row-info { flex: 1; min-width: 0; }
+    .post-row-title { font-weight: 500; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-row-meta  { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .post-row-badge { font-size: 0.72rem; background: rgba(127,184,150,0.12); color: var(--green); border-radius: 20px; padding: 0.2rem 0.6rem; white-space: nowrap; }
+    .post-row-badge.static { background: rgba(163,205,181,0.08); color: var(--text-muted); }
+
+    /* ── Post editor ── */
+    .post-editor { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    .post-editor-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .post-editor-header h2 { flex: 1; font-size: 1.1rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.55rem 0.75rem; color: var(--text); font-size: 0.9rem; outline: none; font-family: inherit; }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--green); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group textarea.body-textarea { min-height: 280px; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.82rem; line-height: 1.6; }
+    .form-group select option { background: var(--surface); }
+    .body-preview { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; min-height: 280px; overflow-y: auto; font-size: 0.88rem; line-height: 1.7; }
+    .body-preview h2 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; color: var(--green-l); }
+    .body-preview ul { padding-left: 1.4rem; }
+    .body-preview p  { margin-bottom: 0.75rem; }
+    .preview-toggle { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+    .preview-toggle button { font-size: 0.78rem; padding: 0.25rem 0.6rem; border-radius: 4px; border: 1px solid var(--border); background: none; color: var(--text-muted); cursor: pointer; }
+    .preview-toggle button.active { background: rgba(127,184,150,0.12); border-color: var(--green); color: var(--green); }
+    .post-actions { display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+    /* ── Settings ── */
+    .settings-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .settings-section h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+    .settings-row { display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap; }
+    .settings-row .form-group { flex: 1; min-width: 200px; }
+    .settings-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.5; }
+    .settings-note a { color: var(--green); }
+
+    /* ── Alerts ── */
+    .alert { padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.88rem; margin-bottom: 1rem; }
+    .alert-success { background: rgba(127,184,150,0.12); border: 1px solid rgba(127,184,150,0.3); color: var(--green-l); }
+    .alert-error   { background: rgba(192,57,43,0.1);   border: 1px solid rgba(192,57,43,0.3);   color: #e57373; }
+    .alert-info    { background: rgba(255,255,255,0.04); border: 1px solid var(--border);          color: var(--text-muted); }
+
+    /* ── Misc ── */
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+    .text-muted { color: var(--text-muted); }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    @media (max-width: 700px) {
+      .sidebar { position: static; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .sidebar-nav { flex-direction: row; flex: none; }
+      .sidebar-footer { flex-direction: row; border-top: none; padding-top: 0; }
+      .content { margin-left: 0; }
+      .hours-row { grid-template-columns: 90px 1fr 1fr 70px; }
+      .service-item { grid-template-columns: 1fr 36px; }
+      .service-item input.note-input, .service-item input.price-input { grid-column: 1; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ GATE ══════════════════════════════════════ -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">Touché <span>Admin Panel</span></div>
+    <p class="gate-msg" id="gate-msg">Enter your admin password to continue.</p>
+    <form id="gate-form" autocomplete="off">
+      <input type="password" id="gate-pw" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Unlock</button>
+      <p class="gate-error" id="gate-error" aria-live="polite"></p>
+    </form>
+    <p class="gate-note" id="gate-note"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ ADMIN ══════════════════════════════════════ -->
+<div id="admin" style="display:none">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">Touché <span>Admin Panel</span></div>
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <button class="nav-item active" data-tab="hours">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Opening Hours
+      </button>
+      <button class="nav-item" data-tab="services">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Services & Prices
+      </button>
+      <button class="nav-item" data-tab="news">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        News Posts
+      </button>
+      <button class="nav-item" data-tab="settings">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-publish" id="publish-btn">Publish Changes</button>
+      <p class="publish-status" id="publish-status"></p>
+      <a href="index.html" class="btn btn-ghost btn-sm" target="_blank" style="text-align:center;text-decoration:none;">View Site</a>
+      <button class="btn-logout" id="logout-btn">Log out</button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content">
+
+    <!-- ── HOURS TAB ── -->
+    <section id="tab-hours" class="tab active">
+      <div class="tab-header">
+        <div>
+          <h1>Opening Hours</h1>
+          <p>Changes are saved locally and published to the site when you click Publish.</p>
+        </div>
+      </div>
+      <div class="hours-grid" id="hours-editor"></div>
+    </section>
+
+    <!-- ── SERVICES TAB ── -->
+    <section id="tab-services" class="tab">
+      <div class="tab-header">
+        <div>
+          <h1>Services &amp; Prices</h1>
+          <p>Edit service names, notes and prices. Add or remove items and categories.</p>
+        </div>
+        <button class="btn btn-secondary" id="add-category-btn">+ Add Category</button>
+      </div>
+      <div id="services-editor"></div>
+    </section>
+
+    <!-- ── NEWS TAB ── -->
+    <section id="tab-news" class="tab">
+      <div class="tab-header">
+        <div><h1>News Posts</h1></div>
+        <button class="btn btn-primary" id="new-post-btn">+ New Post</button>
+      </div>
+      <div id="news-alert"></div>
+      <div id="posts-list" class="posts-list"></div>
+      <div id="post-editor" style="display:none;" class="post-editor"></div>
+    </section>
+
+    <!-- ── SETTINGS TAB ── -->
+    <section id="tab-settings" class="tab">
+      <div class="tab-header"><h1>Settings</h1></div>
+
+      <div class="settings-section">
+        <h2>GitHub Publishing</h2>
+        <p class="settings-note" style="margin-bottom:1rem;">To publish changes live, enter a GitHub Personal Access Token with <strong>repo</strong> scope. The token is stored only in your browser.</p>
+        <div class="settings-row">
+          <div class="form-group" style="flex:2">
+            <label for="pat-input">Personal Access Token</label>
+            <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+          </div>
+          <button class="btn btn-primary" id="save-pat-btn">Save Token</button>
+        </div>
+        <div class="settings-row" style="margin-top:0.75rem;">
+          <div class="form-group" style="flex:2">
+            <label for="repo-input">Repository (owner/repo)</label>
+            <input type="text" id="repo-input" placeholder="dazza0x/touchehaircaterham">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label for="branch-input">Branch</label>
+            <input type="text" id="branch-input" placeholder="master">
+          </div>
+          <button class="btn btn-secondary" id="save-repo-btn">Save</button>
+        </div>
+        <p class="settings-note" style="margin-top:0.75rem;">
+          Create a token at <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">github.com/settings/tokens</a> — select <strong>repo</strong> scope. Classic tokens work fine.
+        </p>
+        <div id="pat-status" style="margin-top:0.75rem;"></div>
+      </div>
+
+      <div class="settings-section">
+        <h2>Export Data</h2>
+        <p class="settings-note" style="margin-bottom:1rem;">Download admin-data.json with your current changes (useful as a backup or for manual deployment).</p>
+        <button class="btn btn-secondary" id="download-btn">Download admin-data.json</button>
+      </div>
+
+      <div class="settings-section">
+        <h2>Change Password</h2>
+        <div class="settings-row">
+          <div class="form-group">
+            <label for="curr-pw">Current Password</label>
+            <input type="password" id="curr-pw" autocomplete="current-password">
+          </div>
+          <div class="form-group">
+            <label for="new-pw">New Password</label>
+            <input type="password" id="new-pw" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="confirm-pw">Confirm New Password</label>
+            <input type="password" id="confirm-pw" autocomplete="new-password">
+          </div>
+          <button class="btn btn-primary" id="change-pw-btn">Update</button>
+        </div>
+        <p id="pw-change-status" class="settings-note" style="margin-top:0.5rem;"></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+'use strict';
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Utilities
+// ──────────────────────────────────────────────────────────────────────────────
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function el(id) { return document.getElementById(id); }
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function showAlert(containerId, msg, type = 'info') {
+  const c = el(containerId);
+  if (!c) return;
+  c.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  if (type === 'success') setTimeout(() => { if(c) c.innerHTML = ''; }, 4000);
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Auth / Gate
+// ──────────────────────────────────────────────────────────────────────────────
+const HASH_KEY    = 'touche_admin_hash';
+const SESSION_KEY = 'touche_admin_ok';
+
+function isFirstRun() { return !localStorage.getItem(HASH_KEY); }
+
+function showGate() {
+  el('gate').style.display  = 'flex';
+  el('admin').style.display = 'none';
+  if (isFirstRun()) {
+    el('gate-msg').textContent  = 'Set a password for this admin panel.';
+    el('gate-note').textContent = 'You are setting up the admin password for the first time. Choose something memorable — there is no recovery option.';
+  }
+}
+
+async function tryUnlock(pw) {
+  const hash   = await sha256(pw);
+  const stored = localStorage.getItem(HASH_KEY);
+  if (!stored) {
+    // First run — set password
+    localStorage.setItem(HASH_KEY, hash);
+    sessionStorage.setItem(SESSION_KEY, '1');
+    openAdmin();
+  } else if (hash === stored) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    openAdmin();
+  } else {
+    el('gate-error').textContent = 'Incorrect password. Please try again.';
+    el('gate-pw').value = '';
+    el('gate-pw').focus();
+  }
+}
+
+function openAdmin() {
+  el('gate').style.display  = 'none';
+  el('admin').style.display = 'flex';
+  loadData();
+}
+
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  el('gate-pw').value = '';
+  el('gate-error').textContent = '';
+  showGate();
+}
+
+el('gate-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  await tryUnlock(el('gate-pw').value);
+});
+
+el('logout-btn').addEventListener('click', logout);
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Data store (in-memory, persisted to admin-data.json via GitHub API)
+// ──────────────────────────────────────────────────────────────────────────────
+let siteData = null;
+let isDirty  = false;
+
+function markDirty() {
+  isDirty = true;
+  el('publish-status').textContent = 'Unsaved changes';
+  el('publish-status').style.color = 'var(--green)';
+}
+
+async function loadData() {
+  try {
+    const r = await fetch('admin-data.json?nocache=' + Date.now());
+    siteData = await r.json();
+  } catch(e) {
+    siteData = { hours: defaultHours(), services: [], posts: [] };
+  }
+  renderHoursTab();
+  renderServicesTab();
+  renderNewsTab();
+  loadSettings();
+}
+
+function defaultHours() {
+  return ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d => ({
+    day: d, opens: d === 'Sunday' ? '' : '9:00am', closes: d === 'Sunday' ? '' : '5:00pm', closed: d === 'Sunday'
+  }));
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Tab navigation
+// ──────────────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    el('tab-' + tab).classList.add('active');
+    // Close post editor when switching tabs
+    if (tab !== 'news') closePostEditor();
+  });
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// HOURS TAB
+// ──────────────────────────────────────────────────────────────────────────────
+function renderHoursTab() {
+  const grid = el('hours-editor');
+  grid.innerHTML = siteData.hours.map((h, i) => `
+    <div class="hours-row" data-idx="${i}">
+      <span class="hours-day">${h.day}</span>
+      <input type="text" class="hours-opens"  value="${esc(h.opens)}"  placeholder="e.g. 9:00am"  ${h.closed ? 'disabled' : ''}>
+      <input type="text" class="hours-closes" value="${esc(h.closes)}" placeholder="e.g. 5:00pm"  ${h.closed ? 'disabled' : ''}>
+      <label class="hours-closed">
+        <input type="checkbox" class="hours-closed-cb" ${h.closed ? 'checked' : ''}> Closed
+      </label>
+    </div>`).join('');
+
+  grid.querySelectorAll('.hours-row').forEach(row => {
+    const idx    = +row.dataset.idx;
+    const opens  = row.querySelector('.hours-opens');
+    const closes = row.querySelector('.hours-closes');
+    const cb     = row.querySelector('.hours-closed-cb');
+
+    cb.addEventListener('change', () => {
+      siteData.hours[idx].closed = cb.checked;
+      opens.disabled  = cb.checked;
+      closes.disabled = cb.checked;
+      if (cb.checked) { siteData.hours[idx].opens = ''; siteData.hours[idx].closes = ''; opens.value = ''; closes.value = ''; }
+      markDirty();
+    });
+    opens.addEventListener('input',  () => { siteData.hours[idx].opens  = opens.value;  markDirty(); });
+    closes.addEventListener('input', () => { siteData.hours[idx].closes = closes.value; markDirty(); });
+  });
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// SERVICES TAB
+// ──────────────────────────────────────────────────────────────────────────────
+function renderServicesTab() {
+  const wrap = el('services-editor');
+  wrap.innerHTML = '';
+  siteData.services.forEach((cat, ci) => {
+    const div = document.createElement('div');
+    div.className = 'service-cat';
+    div.dataset.ci = ci;
+
+    const header = document.createElement('div');
+    header.className = 'service-cat-header';
+    header.innerHTML = `
+      <input type="text" class="service-cat-title" value="${esc(cat.title)}" placeholder="Category name">
+      <button class="btn btn-danger btn-sm remove-cat-btn" title="Remove category">✕ Remove</button>`;
+    div.appendChild(header);
+
+    const itemsWrap = document.createElement('div');
+    itemsWrap.className = 'service-items';
+    cat.items.forEach((item, ii) => {
+      itemsWrap.appendChild(buildItemRow(ci, ii, item));
+    });
+
+    const addRow = document.createElement('div');
+    addRow.className = 'add-item-row';
+    addRow.innerHTML = `<button class="btn btn-ghost btn-sm add-item-btn">+ Add Service</button>`;
+    div.appendChild(itemsWrap);
+    div.appendChild(addRow);
+    wrap.appendChild(div);
+
+    // Events
+    header.querySelector('.service-cat-title').addEventListener('input', e => {
+      siteData.services[ci].title = e.target.value; markDirty();
+    });
+    header.querySelector('.remove-cat-btn').addEventListener('click', () => {
+      if (confirm(`Remove category "${cat.title}" and all its items?`)) {
+        siteData.services.splice(ci, 1);
+        renderServicesTab();
+        markDirty();
+      }
+    });
+    addRow.querySelector('.add-item-btn').addEventListener('click', () => {
+      siteData.services[ci].items.push({ name: '', note: '', price: '' });
+      renderServicesTab();
+      markDirty();
+    });
+  });
+}
+
+function buildItemRow(ci, ii, item) {
+  const row = document.createElement('div');
+  row.className = 'service-item';
+  row.innerHTML = `
+    <div style="display:grid;gap:0.3rem;">
+      <input type="text" class="item-name"  value="${esc(item.name)}"  placeholder="Service name">
+      <input type="text" class="item-note note-input" value="${esc(item.note)}" placeholder="Note (optional)">
+    </div>
+    <input type="text" class="item-price price-input" value="${esc(item.price)}" placeholder="from £0">
+    <button class="btn btn-danger btn-sm remove-item-btn" title="Remove">✕</button>`;
+
+  row.querySelector('.item-name').addEventListener('input',  e => { siteData.services[ci].items[ii].name  = e.target.value; markDirty(); });
+  row.querySelector('.item-note').addEventListener('input',  e => { siteData.services[ci].items[ii].note  = e.target.value; markDirty(); });
+  row.querySelector('.item-price').addEventListener('input', e => { siteData.services[ci].items[ii].price = e.target.value; markDirty(); });
+  row.querySelector('.remove-item-btn').addEventListener('click', () => {
+    siteData.services[ci].items.splice(ii, 1);
+    renderServicesTab();
+    markDirty();
+  });
+  return row;
+}
+
+el('add-category-btn').addEventListener('click', () => {
+  siteData.services.push({ id: 'cat-' + Date.now(), title: 'New Category', items: [] });
+  renderServicesTab();
+  markDirty();
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// NEWS TAB
+// ──────────────────────────────────────────────────────────────────────────────
+let editingPostId = null;
+
+function renderNewsTab() {
+  const list = el('posts-list');
+  const sorted = [...siteData.posts].sort((a,b) => new Date(b.date) - new Date(a.date));
+  if (!sorted.length) {
+    list.innerHTML = '<p class="text-muted" style="padding:1rem;">No posts yet. Click "+ New Post" to create one.</p>';
+    return;
+  }
+  list.innerHTML = sorted.map(p => {
+    const staticBadge = p.staticPage
+      ? `<span class="post-row-badge static" title="Has a static HTML page">static</span>`
+      : `<span class="post-row-badge">dynamic</span>`;
+    const viewHref = p.staticPage ? `news/${p.staticPage}` : `news/post.html?id=${p.id}`;
+    return `
+      <div class="post-row" data-id="${esc(p.id)}">
+        <div class="post-row-info">
+          <div class="post-row-title">${esc(p.title)}</div>
+          <div class="post-row-meta">${esc(p.dateDisplay)} · ${esc(p.category)} · ${esc(p.readTime)}</div>
+        </div>
+        ${staticBadge}
+        <a href="${viewHref}" target="_blank" class="btn btn-ghost btn-sm" title="View post">View</a>
+        <button class="btn btn-secondary btn-sm edit-post-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-post-btn">Delete</button>
+      </div>`;
+  }).join('');
+
+  list.querySelectorAll('.edit-post-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.closest('.post-row').dataset.id;
+      openPostEditor(id);
+    });
+  });
+  list.querySelectorAll('.delete-post-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.closest('.post-row').dataset.id;
+      const post = siteData.posts.find(p => p.id === id);
+      if (!post) return;
+      const msg = post.staticPage
+        ? `Delete "${post.title}" from admin-data.json?\n\nNote: the static HTML page (news/${post.staticPage}) won't be deleted — remove it manually if needed.`
+        : `Delete "${post.title}"? This cannot be undone.`;
+      if (confirm(msg)) {
+        siteData.posts = siteData.posts.filter(p => p.id !== id);
+        renderNewsTab();
+        markDirty();
+      }
+    });
+  });
+}
+
+el('new-post-btn').addEventListener('click', () => openPostEditor(null));
+
+function slugify(str) {
+  return str.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function openPostEditor(id) {
+  editingPostId = id;
+  const post = id ? siteData.posts.find(p => p.id === id) : null;
+  const isNew = !post;
+
+  el('posts-list').style.display   = 'none';
+  el('post-editor').style.display  = '';
+  el('new-post-btn').style.display = 'none';
+
+  const editor = el('post-editor');
+  editor.innerHTML = `
+    <div class="post-editor-header">
+      <h2>${isNew ? 'New Post' : 'Edit Post'}</h2>
+      <button class="btn btn-ghost btn-sm" id="close-editor-btn">← Back to list</button>
+    </div>
+    <div id="editor-alert"></div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label for="pe-title">Title</label>
+        <input type="text" id="pe-title" value="${esc(post?.title||'')}" placeholder="Post title">
+      </div>
+      <div class="form-group">
+        <label for="pe-date">Date (YYYY-MM-DD)</label>
+        <input type="date" id="pe-date" value="${esc(post?.date||new Date().toISOString().split('T')[0])}">
+      </div>
+      <div class="form-group">
+        <label for="pe-category">Category</label>
+        <select id="pe-category">
+          <option ${post?.category==='Trends'?'selected':''}>Trends</option>
+          <option ${post?.category==='Products'?'selected':''}>Products</option>
+          <option ${post?.category==='News'?'selected':''}>News</option>
+          <option ${post?.category==='Advice'?'selected':''}>Advice</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pe-readtime">Read Time</label>
+        <input type="text" id="pe-readtime" value="${esc(post?.readTime||'2 min read')}" placeholder="2 min read">
+      </div>
+      <div class="form-group">
+        <label for="pe-eyebrow">Eyebrow (hero label)</label>
+        <input type="text" id="pe-eyebrow" value="${esc(post?.eyebrow||'')}" placeholder="Trends · October 2025">
+      </div>
+      <div class="form-group full">
+        <label for="pe-subtitle">Hero Subtitle</label>
+        <input type="text" id="pe-subtitle" value="${esc(post?.heroSubtitle||'')}" placeholder="Short description for the hero section">
+      </div>
+      <div class="form-group full">
+        <label for="pe-excerpt">Excerpt (used in cards &amp; meta)</label>
+        <textarea id="pe-excerpt" rows="2">${esc(post?.excerpt||'')}</textarea>
+      </div>
+      <div class="form-group full">
+        <label for="pe-cta-title">CTA Title</label>
+        <input type="text" id="pe-cta-title" value="${esc(post?.ctaTitle||'Book an Appointment')}" placeholder="Book an Appointment">
+      </div>
+      <div class="form-group full">
+        <label for="pe-cta-body">CTA Body</label>
+        <textarea id="pe-cta-body" rows="2">${esc(post?.ctaBody||'')}</textarea>
+      </div>
+      <div class="form-group full">
+        <div class="preview-toggle">
+          <span style="font-size:0.8rem;color:var(--text-muted);margin-right:0.5rem;">Body HTML</span>
+          <button id="show-editor-btn" class="active">Edit</button>
+          <button id="show-preview-btn">Preview</button>
+        </div>
+        <textarea id="pe-body" class="body-textarea">${esc(post?.body||'')}</textarea>
+        <div id="pe-preview" class="body-preview" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="post-actions">
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn-primary" id="save-post-btn">${isNew ? 'Add Post' : 'Save Changes'}</button>
+        ${!isNew ? `<button class="btn btn-danger" id="delete-post-inline-btn">Delete Post</button>` : ''}
+      </div>
+      <button class="btn btn-ghost" id="cancel-post-btn">Cancel</button>
+    </div>`;
+
+  el('close-editor-btn').addEventListener('click', closePostEditor);
+  el('cancel-post-btn').addEventListener('click',  closePostEditor);
+
+  el('show-editor-btn').addEventListener('click', () => {
+    el('pe-body').style.display    = '';
+    el('pe-preview').style.display = 'none';
+    el('show-editor-btn').classList.add('active');
+    el('show-preview-btn').classList.remove('active');
+  });
+  el('show-preview-btn').addEventListener('click', () => {
+    el('pe-preview').innerHTML     = el('pe-body').value;
+    el('pe-body').style.display    = 'none';
+    el('pe-preview').style.display = '';
+    el('show-preview-btn').classList.add('active');
+    el('show-editor-btn').classList.remove('active');
+  });
+
+  el('save-post-btn').addEventListener('click', () => savePost(isNew, post));
+
+  if (!isNew && el('delete-post-inline-btn')) {
+    el('delete-post-inline-btn').addEventListener('click', () => {
+      if (confirm(`Delete "${post.title}"?`)) {
+        siteData.posts = siteData.posts.filter(p => p.id !== post.id);
+        renderNewsTab();
+        markDirty();
+        closePostEditor();
+      }
+    });
+  }
+
+  // Auto-fill eyebrow on category/date change
+  function autoEyebrow() {
+    if (el('pe-eyebrow').value) return;
+    const cat  = el('pe-category').value;
+    const date = new Date(el('pe-date').value);
+    if (isNaN(date)) return;
+    const month = date.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
+    el('pe-eyebrow').value = `${cat} · ${month}`;
+  }
+  el('pe-category').addEventListener('change', autoEyebrow);
+  el('pe-date').addEventListener('change', autoEyebrow);
+}
+
+function savePost(isNew, existingPost) {
+  const title = el('pe-title').value.trim();
+  if (!title) { showAlert('editor-alert', 'Title is required.', 'error'); return; }
+
+  const dateVal = el('pe-date').value;
+  const d = new Date(dateVal + 'T12:00:00');
+  const dateDisplay = isNaN(d) ? dateVal : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  const post = {
+    id:           isNew ? slugify(title) : existingPost.id,
+    title,
+    date:         dateVal,
+    dateDisplay,
+    category:     el('pe-category').value,
+    eyebrow:      el('pe-eyebrow').value.trim(),
+    readTime:     el('pe-readtime').value.trim(),
+    heroSubtitle: el('pe-subtitle').value.trim(),
+    excerpt:      el('pe-excerpt').value.trim(),
+    ctaTitle:     el('pe-cta-title').value.trim(),
+    ctaBody:      el('pe-cta-body').value.trim(),
+    ctaLinkText:  'Book: 01883 340771',
+    body:         el('pe-body').value,
+  };
+
+  // Preserve staticPage field if editing existing
+  if (!isNew && existingPost.staticPage) post.staticPage = existingPost.staticPage;
+
+  if (isNew) {
+    // Check for duplicate id
+    if (siteData.posts.find(p => p.id === post.id)) {
+      post.id = post.id + '-' + Date.now();
+    }
+    siteData.posts.push(post);
+  } else {
+    const idx = siteData.posts.findIndex(p => p.id === existingPost.id);
+    if (idx !== -1) siteData.posts[idx] = post;
+  }
+
+  markDirty();
+  renderNewsTab();
+  closePostEditor();
+}
+
+function closePostEditor() {
+  el('posts-list').style.display   = '';
+  el('post-editor').style.display  = 'none';
+  el('new-post-btn').style.display = '';
+  editingPostId = null;
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// SETTINGS TAB
+// ──────────────────────────────────────────────────────────────────────────────
+function loadSettings() {
+  const pat  = localStorage.getItem('touche_gh_pat')  || '';
+  const repo = localStorage.getItem('touche_gh_repo') || 'dazza0x/touchehaircaterham';
+  const br   = localStorage.getItem('touche_gh_branch') || 'master';
+  el('pat-input').value    = pat ? '••••••••••••••••••••' : '';
+  el('repo-input').value   = repo;
+  el('branch-input').value = br;
+  if (pat) {
+    el('pat-status').innerHTML = '<div class="alert alert-success">Token saved. Publishing is enabled.</div>';
+  } else {
+    el('pat-status').innerHTML = '<div class="alert alert-info">No token saved. You can still download admin-data.json manually.</div>';
+  }
+}
+
+el('save-pat-btn').addEventListener('click', () => {
+  const val = el('pat-input').value.trim();
+  if (val && val !== '••••••••••••••••••••') {
+    localStorage.setItem('touche_gh_pat', val);
+    el('pat-input').value = '••••••••••••••••••••';
+    el('pat-status').innerHTML = '<div class="alert alert-success">Token saved.</div>';
+  }
+});
+el('save-repo-btn').addEventListener('click', () => {
+  localStorage.setItem('touche_gh_repo',   el('repo-input').value.trim()   || 'dazza0x/touchehaircaterham');
+  localStorage.setItem('touche_gh_branch', el('branch-input').value.trim() || 'master');
+  el('pat-status').innerHTML = '<div class="alert alert-success">Repository settings saved.</div>';
+});
+
+el('download-btn').addEventListener('click', () => {
+  const json = JSON.stringify(siteData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'admin-data.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+el('change-pw-btn').addEventListener('click', async () => {
+  const curr    = el('curr-pw').value;
+  const newPw   = el('new-pw').value;
+  const confirm = el('confirm-pw').value;
+  const status  = el('pw-change-status');
+
+  if (!curr || !newPw || !confirm) { status.style.color = '#e57373'; status.textContent = 'All fields required.'; return; }
+  if (newPw !== confirm)           { status.style.color = '#e57373'; status.textContent = 'New passwords do not match.'; return; }
+  if (newPw.length < 8)            { status.style.color = '#e57373'; status.textContent = 'Password must be at least 8 characters.'; return; }
+
+  const currHash = await sha256(curr);
+  if (currHash !== localStorage.getItem(HASH_KEY)) {
+    status.style.color = '#e57373'; status.textContent = 'Current password is incorrect.'; return;
+  }
+  localStorage.setItem(HASH_KEY, await sha256(newPw));
+  status.style.color = 'var(--green-l)'; status.textContent = 'Password updated.';
+  el('curr-pw').value = ''; el('new-pw').value = ''; el('confirm-pw').value = '';
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// PUBLISH (GitHub Contents API)
+// ──────────────────────────────────────────────────────────────────────────────
+el('publish-btn').addEventListener('click', publishChanges);
+
+async function publishChanges() {
+  const pat    = localStorage.getItem('touche_gh_pat');
+  const repo   = localStorage.getItem('touche_gh_repo')   || 'dazza0x/touchehaircaterham';
+  const branch = localStorage.getItem('touche_gh_branch') || 'master';
+
+  if (!pat) {
+    el('publish-status').textContent = 'No token — use Download instead.';
+    el('publish-status').style.color = '#e57373';
+    // Switch to settings tab
+    document.querySelector('[data-tab="settings"]').click();
+    return;
+  }
+
+  el('publish-btn').disabled        = true;
+  el('publish-status').textContent  = 'Publishing…';
+  el('publish-status').style.color  = 'var(--text-muted)';
+
+  try {
+    const apiBase = `https://api.github.com/repos/${repo}/contents/admin-data.json`;
+    const headers = { Authorization: `token ${pat}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' };
+
+    // Get current file SHA
+    const getRes  = await fetch(`${apiBase}?ref=${branch}`, { headers });
+    const current = getRes.ok ? await getRes.json() : null;
+    const sha     = current?.sha;
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(siteData, null, 2))));
+    const body    = JSON.stringify({ message: 'Update site data via admin panel', content, sha, branch });
+
+    const putRes = await fetch(apiBase, { method: 'PUT', headers, body });
+    if (!putRes.ok) {
+      const err = await putRes.json();
+      throw new Error(err.message || putRes.statusText);
+    }
+
+    isDirty = false;
+    el('publish-status').textContent = 'Published ✓';
+    el('publish-status').style.color = 'var(--green)';
+  } catch (e) {
+    el('publish-status').textContent = 'Error: ' + e.message;
+    el('publish-status').style.color = '#e57373';
+  } finally {
+    el('publish-btn').disabled = false;
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Init
+// ──────────────────────────────────────────────────────────────────────────────
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  openAdmin();
+} else {
+  showGate();
+}
+</script>
+</body>
+</html>

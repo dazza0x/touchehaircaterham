@@ -1,0 +1,115 @@
+{
+  "hours": [
+    {"day": "Monday",    "opens": "9:00am", "closes": "5:00pm", "closed": false},
+    {"day": "Tuesday",   "opens": "9:00am", "closes": "6:00pm", "closed": false},
+    {"day": "Wednesday", "opens": "9:00am", "closes": "9:00pm", "closed": false},
+    {"day": "Thursday",  "opens": "9:00am", "closes": "9:00pm", "closed": false},
+    {"day": "Friday",    "opens": "9:00am", "closes": "6:00pm", "closed": false},
+    {"day": "Saturday",  "opens": "8:00am", "closes": "5:00pm", "closed": false},
+    {"day": "Sunday",    "opens": "",       "closes": "",        "closed": true}
+  ],
+  "services": [
+    {
+      "id": "cutting",
+      "title": "Cutting & Styling",
+      "items": [
+        {"name": "Ladies Cut & Finish",  "note": "Shampoo, cut and blow dry", "price": "from £40"},
+        {"name": "Gents Cut & Finish",   "note": "Shampoo, cut and style",    "price": "from £30"},
+        {"name": "Blow Dry — Short",     "note": "",                           "price": "from £25"},
+        {"name": "Blow Dry — Long",      "note": "",                           "price": "from £28"}
+      ]
+    },
+    {
+      "id": "colouring",
+      "title": "Hair Colouring",
+      "items": [
+        {"name": "Colour Regrowth",      "note": "Root colour application",                         "price": "from £59"},
+        {"name": "Semi-Permanent Colour","note": "All-over tone or refresh",                        "price": "from £73"},
+        {"name": "Highlighting",         "note": "Foils, T-section or full head",                   "price": "from £72"},
+        {"name": "Ultimate Balayage",    "note": "Hand-painted, sun-kissed colour with toning",     "price": "from £155"}
+      ]
+    },
+    {
+      "id": "smoothing",
+      "title": "Smoothing & Straightening",
+      "items": [
+        {"name": "Smoothing / Straightening Treatment", "note": "The Crown Professional keratin system — up to 6 months' frizz-free results", "price": "from £200"},
+        {"name": "Perming",              "note": "Full perm or body wave",                          "price": "from £70"}
+      ]
+    },
+    {
+      "id": "treatments",
+      "title": "Treatments & Extensions",
+      "items": [
+        {"name": "Luxury Hair Treatment","note": "Intensive conditioning with Organethic Pure Care or Oligo Professionnel", "price": "from £20"},
+        {"name": "Hair Extensions",      "note": "Consultation required — price on application",    "price": "POA"}
+      ]
+    }
+  ],
+  "posts": [
+    {
+      "id": "autumn-trends-2025",
+      "title": "Autumn Trends 2025 — The Cuts & Colours to Know",
+      "date": "2025-10-11",
+      "dateDisplay": "11 October 2025",
+      "category": "Trends",
+      "eyebrow": "Trends · October 2025",
+      "readTime": "2 min read",
+      "heroSubtitle": "The cuts, colours and styles that are defining this season — and how to get the look.",
+      "excerpt": "From Riviera Bobs and Butterfly Cuts to curtain bangs and balayage — this autumn's hottest styles explored.",
+      "ctaTitle": "Ready for Your Autumn Look?",
+      "ctaBody": "Book a consultation with our Caterham team and let's find the perfect cut or colour for this season.",
+      "ctaLinkText": "Call 01883 340771",
+      "staticPage": "autumn-trends-2025.html",
+      "body": "<p>Autumn is arguably the most exciting season for hair. The shift in mood — deeper tones, richer textures, a new energy — creates the perfect opportunity for a change. This year, the trends feel both fresh and grounded, combining editorial-inspired shapes with effortless wearability. Here's what's turning heads this autumn.</p>\n\n<h2>Bobs Are Back — With a Twist</h2>\n<p>The bob has never really left, but in autumn 2025 it's having a full renaissance. Forget stiff, helmet-like precision — this season's bobs are soft, lived-in and full of personality.</p>\n<ul>\n  <li><strong>The Riviera Bob</strong> — A relaxed, slightly undone version with gentle texture and soft ends. Think French coastal ease rather than sharp geometry.</li>\n  <li><strong>The Jawline Bob</strong> — Cut to sit right at the jaw, this length is universally flattering and works beautifully with face-framing highlights or balayage.</li>\n  <li><strong>The Blunt Bob</strong> — For those who want impact. A clean, precise edge that photographs beautifully and exudes confidence.</li>\n  <li><strong>The Textured Bob</strong> — Soft movement created by point-cutting or texturising shears for a low-maintenance, high-style result.</li>\n</ul>\n\n<h2>Layers and Movement</h2>\n<p>Long, flat hair is firmly out. Autumn 2025 is all about movement — styles that flow, bounce and react to the way you move.</p>\n<ul>\n  <li><strong>The Butterfly Cut</strong> — A layered style with short, wispy layers framing the face and longer, flowing lengths below. Romantic and dramatic in equal measure.</li>\n  <li><strong>The Modern Shag</strong> — Updated for 2025, this cut features heavily textured layers, curtain bangs and plenty of rock-and-roll energy. Suits almost every hair type.</li>\n  <li><strong>The Long Wolf Cut</strong> — Edgy, layered and surprisingly versatile. Pairs beautifully with rich, deep colour for an autumn-appropriate look.</li>\n</ul>\n\n<h2>Bangs — From Wispy to Bold</h2>\n<p>Bangs are everywhere this season, with options to suit every face shape and comfort level.</p>\n<ul>\n  <li><strong>Curtain Bangs</strong> — Soft, parted in the middle and feathered to the sides. The most face-flattering bang option, and incredibly easy to grow out if you change your mind.</li>\n  <li><strong>Birkin Bangs</strong> — Inspired by Jane Birkin's signature fringe. Wispy, effortless and undone. The anti-precision bang.</li>\n  <li><strong>Blunt Bangs</strong> — A strong statement. Works best with structured cuts like the blunt bob or a sleek lob.</li>\n  <li><strong>Wispy Micro Bangs</strong> — For the truly adventurous. Short, airy and very editorial.</li>\n</ul>\n\n<h2>Short Cuts &amp; Pixies</h2>\n<p>Short hair is making a confident comeback. The bixie (a hybrid between a bob and a pixie) is having a major moment, offering a fresh, low-maintenance cut that still allows for styling versatility. The curly pixie — tailored specifically for natural texture — is one of the most celebrated cuts of the season.</p>\n\n<h2>Creative Braids &amp; Half-Up Styles</h2>\n<p>For longer lengths, braided elements and half-up styles offer a way to look polished while keeping things interesting. Crown braids, twisted half-ups and loose boho plaits all feature heavily in autumn 2025 editorial looks.</p>\n\n<h2>Colour Trends: Rich, Warm Tones</h2>\n<p>Colour this autumn follows the season's palette. Chestnuts, warm caramels, toasted ambers and deep auburns dominate. Balayage continues to reign, but with richer, more saturated base tones rather than the bleached-out roots of previous years. Brunettes are adding dimension with copper and reddish notes. Blondes are warming up — goodbye icy platinum, hello golden wheat.</p>\n\n<h2>Why These Styles Work for Our Caterham Clients</h2>\n<p>The common thread running through all of this season's key trends is <strong>effortlessness</strong>. These aren't styles that demand daily effort — they're cuts and colours designed to look good with minimal styling and grow out gracefully.</p>\n<p>That's especially important for our clients who want to look great without spending an hour in front of the mirror every morning. Our stylists will always tailor any trend to your specific hair type, lifestyle and face shape — because the best hairstyle isn't necessarily the one that's most fashionable, but the one that's most <em>you</em>.</p>"
+    },
+    {
+      "id": "oligo-professionnel",
+      "title": "Why We Love Oligo Professionnel",
+      "date": "2025-04-09",
+      "dateDisplay": "9 April 2025",
+      "category": "Products",
+      "eyebrow": "Products · April 2025",
+      "readTime": "1 min read",
+      "heroSubtitle": "Botanical performance meets salon-grade results — discover why we trust this range with your hair.",
+      "excerpt": "High-performance, botanically-rich formulations that care for your hair without compromising results.",
+      "ctaTitle": "Experience It for Yourself",
+      "ctaBody": "Ask about an Oligo Professionnel treatment at your next visit to our Caterham salon.",
+      "ctaLinkText": "Book: 01883 340771",
+      "staticPage": "oligo-professionnel.html",
+      "body": "<p>At Touché Hairdressing, we're selective about the products we use. Every range we introduce to the salon is chosen with care — for its performance, safety profile and the values behind it. Oligo Professionnel ticks every box.</p>\n\n<h2>High-Quality Ingredients, Thoughtfully Sourced</h2>\n<p>Oligo Professionnel's philosophy is rooted in the belief that professional hair care should never compromise on ingredient quality. Their formulations combine botanical extracts, essential oils and proteins — all working together to nourish hair at a structural level, not just coat the surface.</p>\n<p>Key ingredients include:</p>\n<ul>\n  <li><strong>Argan oil</strong> — Rich in vitamin E and fatty acids, argan oil moisturises deeply, reduces frizz and adds shine without heaviness</li>\n  <li><strong>Aloe vera</strong> — Soothing and hydrating for both scalp and strand, aloe vera supports healthy hair growth and calms irritation</li>\n  <li><strong>Sunflower seed extract</strong> — Lightweight and nourishing, providing UV protection and enhancing natural lustre</li>\n  <li><strong>Essential oils</strong> — Carefully selected for scalp health and fragrance, with no synthetic masking agents</li>\n</ul>\n\n<h2>Free from Harsh Chemicals</h2>\n<p>Oligo Professionnel formulations are free from sulfates, parabens and other potentially harmful additives that strip hair of its natural oils and disrupt the scalp's microbiome. This is particularly important for colour-treated hair — a harsh shampoo or conditioner can fade colour rapidly and leave hair feeling brittle and dull.</p>\n<p>By using products that are gentle on the hair's structure, we help our colour and treatment work last longer, look better and feel healthier.</p>\n\n<h2>Salon-Grade Performance</h2>\n<p>There's a meaningful difference between consumer products you find on supermarket shelves and professional-grade formulations developed for salon use. Oligo Professionnel sits firmly in the latter camp — concentrated, expertly balanced and designed for the demands of professional application.</p>\n<p>Whether we're preparing your hair for a colour service, treating it post-chemical process, or simply giving it an intensive conditioning boost, Oligo Professionnel delivers consistent, measurable results.</p>\n\n<h2>Scalp Care as Well as Strand Care</h2>\n<p>Healthy hair starts at the scalp, and Oligo Professionnel's formulations reflect this. By supporting scalp health — maintaining moisture balance, soothing sensitivity and promoting circulation — the range helps create the ideal conditions for strong, healthy growth from root to tip.</p>"
+    },
+    {
+      "id": "the-crown-professional",
+      "title": "The Crown Professional — Advanced Smoothing & Straightening",
+      "date": "2025-04-09",
+      "dateDisplay": "9 April 2025",
+      "category": "Products",
+      "eyebrow": "Products · April 2025",
+      "readTime": "1 min read",
+      "heroSubtitle": "Advanced keratin smoothing — frizz-free, manageable hair that lasts up to six months.",
+      "excerpt": "Discover The Crown Professional smoothing system — advanced keratin science for frizz-free, manageable hair at our Caterham salon.",
+      "ctaTitle": "Ready for Frizz-Free Hair?",
+      "ctaBody": "Smoothing treatments start from £200. Book a consultation at our Caterham salon to discuss whether this treatment is right for your hair.",
+      "ctaLinkText": "Book: 01883 340771",
+      "staticPage": "the-crown-professional.html",
+      "body": "<p>For clients who struggle with frizz, unruly curls or hair that simply refuses to behave, The Crown Professional smoothing system offers a genuinely transformative solution. We're proud to offer this treatment at our Caterham salon — and the results speak for themselves.</p>\n\n<h2>What Sets The Crown Professional Apart</h2>\n<p>Not all keratin treatments are created equal. The smoothing treatment market has evolved enormously over the past decade, and The Crown Professional represents the current state of the art — combining advanced science with a commitment to natural, gentle ingredients.</p>\n<p>Where older-generation smoothing treatments relied on formaldehyde or similarly harsh chemicals, The Crown Professional achieves its results through a carefully balanced system of:</p>\n<ul>\n  <li><strong>Hydrolyzed keratin</strong> — The fundamental building block of hair protein, in a form small enough to penetrate the hair shaft and rebuild structure from within</li>\n  <li><strong>Argan oil</strong> — Adds lubrication, shine and softness while protecting against environmental damage</li>\n  <li><strong>Nourishing botanicals</strong> — Plant-derived extracts that complement the keratin complex and support overall hair health</li>\n</ul>\n\n<h2>Gentle Formula, Powerful Results</h2>\n<p>The Crown Professional is sulfate-free and paraben-free. This matters not just for safety, but for results — harsh surfactants can begin breaking down a keratin treatment within weeks, dramatically reducing its longevity.</p>\n<p>By using compatible, gentle formulations before and after the treatment, we help our clients maintain their results for as long as possible — typically three to six months depending on hair type, porosity and aftercare routine.</p>\n\n<h2>Suitable for All Hair Types</h2>\n<p>One of The Crown Professional's most valued qualities is its versatility. Whether you have:</p>\n<ul>\n  <li>Naturally curly or coily hair seeking controlled definition and reduced frizz</li>\n  <li>Wavy hair that wants smoothness without going completely straight</li>\n  <li>Chemically treated hair that has become porous and difficult to manage</li>\n  <li>Fine hair prone to humidity-induced frizz</li>\n</ul>\n<p>…The Crown Professional can be calibrated to your specific hair type and desired outcome. We don't take a one-size-fits-all approach — every treatment begins with a thorough consultation.</p>\n\n<h2>Colour-Safe</h2>\n<p>A major concern for coloured-hair clients considering a smoothing treatment is colour integrity. The Crown Professional is formulated to be colour-safe, meaning it won't lift, alter or dramatically fade your colour. In fact, many clients find that their colour looks richer and more vibrant after the treatment, as the smoothed cuticle reflects light more evenly.</p>\n\n<h2>Ethically Produced</h2>\n<p>The Crown Professional shares our values when it comes to ethical sourcing and environmental responsibility. The brand's ingredients are responsibly sourced, and their manufacturing processes are designed to minimise environmental impact — something we consider an important factor when selecting any product for use in our salon.</p>"
+    },
+    {
+      "id": "organethic-pure-care",
+      "title": "Organethic Pure Care — Ethical Beauty That Delivers",
+      "date": "2025-04-09",
+      "dateDisplay": "9 April 2025",
+      "category": "Products",
+      "eyebrow": "Products · April 2025",
+      "readTime": "2 min read",
+      "heroSubtitle": "Ethical, sustainable hair care that works — because beauty shouldn't cost the planet.",
+      "excerpt": "Discover the natural, sustainable range that's become a cornerstone of our treatment menu.",
+      "ctaTitle": "Ask About an OPC Treatment",
+      "ctaBody": "Luxury hair treatments using Organethic Pure Care start from £20. Available as a standalone service or as an add-on to any colour or cutting appointment.",
+      "ctaLinkText": "Book: 01883 340771",
+      "staticPage": "organethic-pure-care.html",
+      "body": "<p>There's a growing awareness in the beauty industry that the products we apply to hair and skin have implications far beyond the bathroom. At Touché Hairdressing, we take this seriously — which is why Organethic Pure Care (OPC) has become one of our most trusted ranges.</p>\n\n<h2>A Commitment to Natural Ingredients</h2>\n<p>OPC was founded on a straightforward principle: that professional hair care can be both highly effective and genuinely natural. Every formula in the range is built around plant-derived extracts and essential oils, selected both for their performance and their provenance.</p>\n<p>The range is:</p>\n<ul>\n  <li>Free from sulfates</li>\n  <li>Free from parabens</li>\n  <li>Free from artificial colourants and synthetic fragrances</li>\n  <li>Formulated without silicones that coat the hair and build up over time</li>\n</ul>\n<p>The result is hair care that genuinely nourishes rather than masking damage with synthetic coatings — and a cleaner, healthier scalp over time.</p>\n\n<h2>Ethical and Sustainable Practices</h2>\n<p>What distinguishes OPC beyond ingredient quality is its comprehensive commitment to ethical practice. This extends across the entire supply chain:</p>\n<ul>\n  <li><strong>Fair labour standards</strong> — OPC works with suppliers who meet rigorous fair trade and labour standards throughout the ingredient sourcing process</li>\n  <li><strong>Biodegradable packaging</strong> — The brand has committed to sustainable packaging across its product lines, minimising plastic waste</li>\n  <li><strong>Supply chain transparency</strong> — Customers and salons can trace the origin of key ingredients, ensuring accountability at every stage</li>\n</ul>\n<p>For a salon like Touché, whose clients increasingly care about where their products come from and what impact they have, this transparency is genuinely valuable.</p>\n\n<h2>Advanced Professional Formulation</h2>\n<p>OPC isn't simply a \"natural\" range that sacrifices performance for principles. Their formulations are developed with professional use in mind, offering targeted solutions across the full spectrum of hair needs:</p>\n<ul>\n  <li><strong>Hydration</strong> — For dry, thirsty hair lacking moisture and elasticity</li>\n  <li><strong>Repair</strong> — For chemically treated, heat-damaged or structurally compromised hair</li>\n  <li><strong>Volume</strong> — For fine or limp hair needing body and lift without heaviness</li>\n  <li><strong>Colour care</strong> — Formulations specifically designed to extend colour longevity and enhance vibrancy</li>\n  <li><strong>Scalp therapy</strong> — Targeted treatments for sensitivity, imbalance or irritation</li>\n</ul>\n<p>This versatility makes OPC a genuinely useful professional range — we can tailor treatments to individual clients rather than applying a single-formula approach.</p>\n\n<h2>Transparency as a Principle</h2>\n<p>One of the qualities we most respect about Organethic Pure Care is their commitment to education. Rather than hiding behind marketing language, the brand provides detailed ingredient breakdowns and offers training programmes for salon teams — so we can confidently explain exactly what we're applying to your hair and why.</p>\n<p>When a client asks \"what's in that?\" — and increasingly they do — we can give a genuine, informed answer rather than a branded platitude.</p>\n\n<h2>Beauty with a Story</h2>\n<p>Every OPC product represents a process of mindful selection — from the botanical gardens where raw materials are sourced to the laboratory where they're refined into professional formulations. That story of care and intention is something we believe is worth sharing.</p>\n<p>In a market flooded with products making extravagant claims, OPC stands out for saying what it does and doing what it says.</p>"
+    }
+  ]
+}

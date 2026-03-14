@@ -1,0 +1,10 @@
+# Source markdown files — not needed in the repository
+touchehaircaterham-md/
+
+# Claude Code settings
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

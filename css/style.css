@@ -1532,20 +1532,66 @@ p:last-child { margin-bottom: 0; }
 }
 
 .instagram-feed__handle {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.45rem;
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-light);
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 .instagram-feed__handle svg {
   color: var(--gold);
+  flex-shrink: 0;
+}
+
+/* ===== SCROLL-UP BUTTON ===== */
+#scroll-up-btn {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--gold);
+  border: 1px solid rgba(187,169,150,0.28);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease, color 0.2s ease;
+  z-index: 950;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  pointer-events: none;
+}
+
+#scroll-up-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#scroll-up-btn:hover {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+}
+
+@media (max-width: 480px) {
+  #scroll-up-btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .instagram-grid {

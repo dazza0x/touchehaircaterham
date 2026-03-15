@@ -270,12 +270,10 @@
         }
         btn.disabled = true;
         btn.textContent = 'Sending…';
-        var payload = {};
-        new FormData(form).forEach(function (v, k) { payload[k] = v; });
         return fetch(endpoint, {
           method:  'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body:    JSON.stringify(payload)
+          headers: { 'Accept': 'application/json' },
+          body:    new FormData(form)
         });
       })
       .then(function (res) {
@@ -286,12 +284,18 @@
           showMsg('Thank you — your message has been sent. We\'ll be in touch shortly.', true);
           form.reset();
         } else {
+          res.json().then(function (body) {
+            console.error('Formspree error', res.status, body);
+          }).catch(function () {
+            console.error('Formspree error', res.status);
+          });
           showMsg('Something went wrong. Please try again or call us on 01883 340771.', false);
         }
       })
-      .catch(function () {
+      .catch(function (err) {
         btn.disabled    = false;
         btn.textContent = 'Send Message';
+        console.error('Form submission error', err);
         showMsg('Could not send your message. Please call us on 01883 340771.', false);
       });
   });

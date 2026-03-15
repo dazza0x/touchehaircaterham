@@ -62,9 +62,12 @@
         ? `${prefix}${p.staticPage}`
         : `${prefix}post.html?id=${p.id}`;
       const catSlug = p.category.toLowerCase().replace(/\s+/g, '-');
+      const imgEl = p.image
+        ? `<div class="blog-card__img"><img src="${p.image.startsWith('Images/') ? prefix.replace('news/','') + p.image : p.image}" alt="${p.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>`
+        : `<div class="blog-card__img blog-card__img--${catSlug}" aria-hidden="true"></div>`;
       return `
         <article class="blog-card">
-          <div class="blog-card__img blog-card__img--${catSlug}" aria-hidden="true"></div>
+          ${imgEl}
           <div class="blog-card__body">
             <div class="blog-card__meta">${p.dateDisplay} · ${p.readTime}</div>
             <h3>${p.title}</h3>

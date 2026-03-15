@@ -731,6 +731,22 @@ function openPostEditor(id) {
         <textarea id="pe-excerpt" rows="2">${esc(post?.excerpt||'')}</textarea>
       </div>
       <div class="form-group full">
+        <label for="pe-image-path">Card Image <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+        <p class="settings-note" style="margin-bottom:0.5rem;">Recommended: <strong>1200 × 675 px JPEG, under 150 KB</strong>. Add the file to the <code>Images/</code> folder, then enter the path below or use Browse to preview.</p>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+          <input type="text" id="pe-image-path" value="${esc(post?.image||'')}" placeholder="Images/my-post-image.jpg" style="flex:1;min-width:200px;">
+          <label class="btn btn-secondary btn-sm" style="cursor:pointer;white-space:nowrap;margin:0;">
+            Browse preview
+            <input type="file" id="pe-image-file" accept="image/*" style="display:none;">
+          </label>
+        </div>
+        <div id="pe-image-preview" style="margin-top:0.6rem;${post?.image ? '' : 'display:none;'}">
+          <img id="pe-image-preview-img" src="${esc(post?.image||'')}" alt="Preview" style="max-height:130px;border-radius:6px;object-fit:cover;max-width:100%;border:1px solid var(--border);">
+        </div>
+        <p class="settings-note" style="margin-top:0.4rem;">The image file must be committed to the <code>Images/</code> folder and pushed to GitHub to appear on the live site.</p>
+      </div>
+
+      <div class="form-group full">
         <label for="pe-cta-title">CTA Title</label>
         <input type="text" id="pe-cta-title" value="${esc(post?.ctaTitle||'Book an Appointment')}" placeholder="Book an Appointment">
       </div>
@@ -786,6 +802,25 @@ function openPostEditor(id) {
     });
   }
 
+  // Image picker
+  el('pe-image-file').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    el('pe-image-path').value = 'Images/' + file.name;
+    const url = URL.createObjectURL(file);
+    el('pe-image-preview-img').src = url;
+    el('pe-image-preview').style.display = '';
+  });
+  el('pe-image-path').addEventListener('input', function () {
+    const val = this.value.trim();
+    if (val) {
+      el('pe-image-preview-img').src = val;
+      el('pe-image-preview').style.display = '';
+    } else {
+      el('pe-image-preview').style.display = 'none';
+    }
+  });
+
   // Auto-fill eyebrow on category/date change
   function autoEyebrow() {
     if (el('pe-eyebrow').value) return;
@@ -821,6 +856,7 @@ function savePost(isNew, existingPost) {
     ctaBody:      el('pe-cta-body').value.trim(),
     ctaLinkText:  'Book: 01883 340771',
     body:         el('pe-body').value,
+    image:        el('pe-image-path').value.trim() || undefined,
   };
 
   // Preserve staticPage field if editing existing

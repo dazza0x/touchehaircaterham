@@ -871,6 +871,7 @@ p:last-child { margin-bottom: 0; }
 
 .pricing-category {
   margin-bottom: 4rem;
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
 }
 
 .pricing-category__title {

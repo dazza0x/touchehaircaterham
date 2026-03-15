@@ -158,23 +158,76 @@
   </div>
 </div>
 
-<!-- ===== INSTAGRAM FOLLOW ===== -->
-<section class="section section--cream" style="padding:3.5rem 0;" aria-label="Instagram">
-  <div class="container" style="text-align:center;">
-    <span class="eyebrow">Stay Connected</span>
-    <h2 style="margin-bottom:0.7rem;">Follow Us on Instagram</h2>
-    <p style="color:var(--text-light);max-width:480px;margin:0 auto 1.8rem;font-size:1rem;">Keep up with the latest looks, trends and behind-the-scenes from our Caterham salon.</p>
-    <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" class="btn btn--gold">Follow @touchehairdressingcaterham</a>
+<!-- ===== INSTAGRAM FEED ===== -->
+<section class="section section--cream" aria-label="Instagram feed">
+  <div class="container">
+
+    <div class="instagram-feed__header">
+      <div class="instagram-feed__handle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @touchehairdressingcaterham
+      </div>
+      <span class="eyebrow">Stay Connected</span>
+      <h2>Latest from Instagram</h2>
+      <div class="divider"></div>
+      <p style="color:var(--text-light);max-width:500px;margin:0 auto;">Fresh looks, colour transformations and behind-the-scenes from our Caterham salon.</p>
+    </div>
+
+    <div class="instagram-grid" id="instagram-grid" aria-label="Instagram photos"></div>
+    <div class="instagram-grid__loading" id="instagram-loading">Loading latest posts&hellip;</div>
+
+    <div class="instagram-feed__cta">
+      <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" class="btn btn--gold">Follow Us on Instagram</a>
+    </div>
+
   </div>
 </section>
 
-<!-- ===== COMMONNINJA WIDGET ===== -->
-<section class="section section--cream" aria-label="Gallery">
-  <div class="container">
-    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
-    <div class="commonninja_component pid-432ccef7-cc58-451c-9a2c-a123068f194a"></div>
-  </div>
-</section>
+<script>
+(function () {
+  var FEED = 'https://feeds.behold.so/1wCZfSNkmTG5dPE8pMcz';
+  var grid    = document.getElementById('instagram-grid');
+  var loading = document.getElementById('instagram-loading');
+
+  var instaSVG = '<svg class="instagram-grid__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>';
+  var playSVG  = '<div class="instagram-grid__video-badge" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>';
+
+  fetch(FEED)
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (data) {
+      var posts = (data.posts || data).slice(0, 12);
+      loading.style.display = 'none';
+
+      posts.forEach(function (post) {
+        var imgUrl  = post.sizes && post.sizes.medium ? post.sizes.medium.url : post.mediaUrl;
+        var thumb   = post.mediaType === 'VIDEO' ? (post.thumbnailUrl || imgUrl) : imgUrl;
+        var raw     = post.prunedCaption || post.caption || '';
+        var caption = raw.length > 110 ? raw.slice(0, 107) + '\u2026' : raw;
+        var safe    = caption.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+        var a = document.createElement('a');
+        a.href      = post.permalink;
+        a.target    = '_blank';
+        a.rel       = 'noopener';
+        a.className = 'instagram-grid__item';
+        a.setAttribute('aria-label', safe || 'View post on Instagram');
+
+        a.innerHTML =
+          '<img src="' + thumb + '" alt="' + safe + '" loading="lazy">' +
+          '<div class="instagram-grid__overlay">' +
+            instaSVG +
+            (caption ? '<span class="instagram-grid__caption">' + safe + '</span>' : '') +
+          '</div>' +
+          (post.mediaType === 'VIDEO' ? playSVG : '');
+
+        grid.appendChild(a);
+      });
+    })
+    .catch(function () {
+      loading.innerHTML = '<p style="color:var(--text-light);">Unable to load Instagram feed — <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" style="color:var(--gold);">visit us on Instagram</a>.</p>';
+    });
+}());
+</script>
 
 <!-- ===== SERVICES OVERVIEW ===== -->
 <section class="section" aria-labelledby="services-heading">

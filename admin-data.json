@@ -196,8 +196,39 @@
     }
   ],
   "instagram": {
-    "source": "behold",
-    "posts": []
+    "source": "manual",
+    "posts": [
+      {
+        "imageUrl": "Images/lauren-1.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DVY0OQQDOdJ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      },
+      {
+        "imageUrl": "Images/SnapInsta.to_631792974_18035387429672302_531358247490902546_n.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DUndQAWDN-5/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      },
+      {
+        "imageUrl": "Images/SnapInsta.to_625055888_18034659248672302_7548183478368216786_n.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DUIWllaDGMG/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      },
+      {
+        "imageUrl": "Images/SnapInsta.to_610287575_18031621283672302_4770361884095746334_n.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DTDBmcBjOoj/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      },
+      {
+        "imageUrl": "Images/SnapInsta.to_625116822_18034157936672302_8915667283687551698_n.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DUIWllaDGMG/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      },
+      {
+        "imageUrl": "Images/SnapInsta.to_626500957_17982903182951938_2298012603458986987_n.jpg",
+        "caption": "",
+        "link": "https://www.instagram.com/p/DULn-GBDNM9/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+      }
+    ]
   },
   "formEndpoint": "https://formspree.io/f/mqeydgpe"
 }

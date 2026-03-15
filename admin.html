@@ -154,6 +154,16 @@
     .alert-error   { background: rgba(192,57,43,0.1);   border: 1px solid rgba(192,57,43,0.3);   color: #e57373; }
     .alert-info    { background: rgba(255,255,255,0.04); border: 1px solid var(--border);          color: var(--text-muted); }
 
+    /* ── Instagram tab ── */
+    .source-toggle { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; width: fit-content; margin-bottom: 1.5rem; }
+    .source-btn { padding: 0.6rem 1.4rem; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.88rem; transition: background 0.15s, color 0.15s; display: flex; align-items: center; gap: 0.4rem; }
+    .source-btn + .source-btn { border-left: 1px solid var(--border); }
+    .source-btn.active { background: rgba(127,184,150,0.15); color: var(--green); font-weight: 600; }
+    .ig-post-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 0.75rem; align-items: center; padding: 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.5rem; }
+    .ig-post-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; display: block; background: var(--surface2); }
+    .ig-post-placeholder { width: 64px; height: 64px; background: var(--surface2); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.7rem; text-align: center; }
+    .ig-url-preview { max-height: 120px; border-radius: 6px; margin-top: 0.5rem; display: block; }
+
     /* ── Misc ── */
     .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
     .text-muted { color: var(--text-muted); }
@@ -205,6 +215,10 @@
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         News Posts
       </button>
+      <button class="nav-item" data-tab="instagram">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Instagram
+      </button>
       <button class="nav-item" data-tab="settings">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Settings
@@ -253,6 +267,48 @@
       <div id="news-alert"></div>
       <div id="posts-list" class="posts-list"></div>
       <div id="post-editor" style="display:none;" class="post-editor"></div>
+    </section>
+
+    <!-- ── INSTAGRAM TAB ── -->
+    <section id="tab-instagram" class="tab">
+      <div class="tab-header">
+        <div>
+          <h1>Instagram Feed</h1>
+          <p>Switch between the live Behold feed and a manually curated gallery.</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h2>Feed Source</h2>
+        <p class="settings-note" style="margin-bottom:1.2rem;">Select which source powers the Instagram section on your homepage. Publish after changing.</p>
+        <div class="source-toggle">
+          <button class="source-btn" data-source="behold">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Behold (Auto)
+          </button>
+          <button class="source-btn" data-source="manual">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Manual Gallery
+          </button>
+        </div>
+        <p id="ig-source-label" class="settings-note"></p>
+      </div>
+
+      <div id="ig-behold-info" class="settings-section">
+        <h2>Behold Feed Details</h2>
+        <p class="settings-note">Your Instagram posts are fetched automatically. Posts published to the main Instagram grid appear within minutes.</p>
+        <p class="settings-note" style="margin-top:0.75rem;">Feed URL: <code style="background:var(--bg);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.8rem;user-select:all;">https://feeds.behold.so/1wCZfSNkmTG5dPE8pMcz</code></p>
+        <p class="settings-note" style="margin-top:0.75rem;"><strong>Tip:</strong> Make sure new Reels have "Share to feed" enabled in Instagram when posting, so they appear in the API.</p>
+      </div>
+
+      <div id="ig-manual-section" style="display:none;">
+        <div class="tab-header" style="margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);">
+          <div><h2 style="font-size:1.05rem;font-weight:600;">Manual Gallery</h2></div>
+          <button class="btn btn-primary btn-sm" id="add-ig-btn">+ Add Image</button>
+        </div>
+        <div id="ig-post-editor" style="display:none;"></div>
+        <div id="ig-posts-list"></div>
+      </div>
     </section>
 
     <!-- ── SETTINGS TAB ── -->
@@ -416,6 +472,7 @@ async function loadData() {
   renderHoursTab();
   renderServicesTab();
   renderNewsTab();
+  renderInstagramTab();
   loadSettings();
 }
 
@@ -778,6 +835,139 @@ function closePostEditor() {
   el('new-post-btn').style.display = '';
   editingPostId = null;
 }
+
+// ──────────────────────────────────────────────────────────────────────────────
+// INSTAGRAM TAB
+// ──────────────────────────────────────────────────────────────────────────────
+function renderInstagramTab() {
+  if (!siteData.instagram) siteData.instagram = { source: 'behold', posts: [] };
+  const ig = siteData.instagram;
+
+  // Update toggle buttons
+  document.querySelectorAll('.source-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.source === ig.source);
+  });
+
+  // Show/hide panels
+  el('ig-behold-info').style.display    = ig.source === 'behold' ? '' : 'none';
+  el('ig-manual-section').style.display = ig.source === 'manual' ? '' : 'none';
+
+  // Label
+  const label = el('ig-source-label');
+  label.textContent = ig.source === 'behold'
+    ? 'Currently active: Behold auto-feed. The homepage pulls live from your Instagram.'
+    : 'Currently active: Manual gallery. The homepage shows only the images you add below.';
+  label.style.color = 'var(--green)';
+
+  renderIgPostsList();
+}
+
+function renderIgPostsList() {
+  const posts = (siteData.instagram && siteData.instagram.posts) || [];
+  const list  = el('ig-posts-list');
+  if (!list) return;
+
+  if (!posts.length) {
+    list.innerHTML = '<p class="text-muted" style="padding:0.5rem 0;">No images yet. Click "+ Add Image" to get started.</p>';
+    return;
+  }
+
+  list.innerHTML = posts.map((p, i) => `
+    <div class="ig-post-row" data-idx="${i}">
+      ${p.imageUrl
+        ? `<img class="ig-post-thumb" src="${esc(p.imageUrl)}" alt="" onerror="this.style.opacity='0.2'">`
+        : `<div class="ig-post-placeholder">No image</div>`}
+      <div style="min-width:0;">
+        <div style="font-size:0.88rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(p.caption || '(no caption)')}</div>
+        ${p.link ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(p.link)}</div>` : ''}
+      </div>
+      <div style="display:flex;gap:0.4rem;flex-shrink:0;">
+        <button class="btn btn-secondary btn-sm edit-ig-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-ig-btn">✕</button>
+      </div>
+    </div>`).join('');
+
+  list.querySelectorAll('.edit-ig-btn').forEach(btn => {
+    btn.addEventListener('click', () => openIgEditor(+btn.closest('.ig-post-row').dataset.idx));
+  });
+  list.querySelectorAll('.delete-ig-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = +btn.closest('.ig-post-row').dataset.idx;
+      if (confirm('Remove this image from the gallery?')) {
+        siteData.instagram.posts.splice(idx, 1);
+        renderIgPostsList();
+        markDirty();
+      }
+    });
+  });
+}
+
+function openIgEditor(idx) {
+  const isNew = idx === null || idx === undefined;
+  const post  = isNew ? null : siteData.instagram.posts[idx];
+  const pane  = el('ig-post-editor');
+  pane.style.display = '';
+  pane.innerHTML = `
+    <div class="post-editor" style="margin-bottom:1.5rem;">
+      <div class="post-editor-header">
+        <h2 style="font-size:1rem;">${isNew ? 'Add Image' : 'Edit Image'}</h2>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Image URL</label>
+          <input type="url" id="ig-f-url" value="${esc(post?.imageUrl || '')}" placeholder="https://...">
+          <img id="ig-f-preview" class="ig-url-preview" src="${esc(post?.imageUrl || '')}" alt="" style="${post?.imageUrl ? '' : 'display:none;'}">
+        </div>
+        <div class="form-group full">
+          <label>Caption</label>
+          <textarea id="ig-f-caption" rows="3">${esc(post?.caption || '')}</textarea>
+        </div>
+        <div class="form-group full">
+          <label>Instagram Post Link <span style="font-weight:400;color:var(--text-muted);">(optional — opens post when clicked)</span></label>
+          <input type="url" id="ig-f-link" value="${esc(post?.link || '')}" placeholder="https://www.instagram.com/p/...">
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+        <button class="btn btn-primary" id="ig-f-save">${isNew ? 'Add to Gallery' : 'Save Changes'}</button>
+        <button class="btn btn-ghost" id="ig-f-cancel">Cancel</button>
+      </div>
+    </div>`;
+
+  el('ig-f-url').addEventListener('input', () => {
+    const url = el('ig-f-url').value.trim();
+    const prev = el('ig-f-preview');
+    if (url) { prev.src = url; prev.style.display = ''; }
+    else       { prev.style.display = 'none'; }
+  });
+
+  el('ig-f-cancel').addEventListener('click', () => { pane.style.display = 'none'; });
+
+  el('ig-f-save').addEventListener('click', () => {
+    const imageUrl = el('ig-f-url').value.trim();
+    if (!imageUrl) { alert('Image URL is required.'); return; }
+    const item = { imageUrl, caption: el('ig-f-caption').value.trim(), link: el('ig-f-link').value.trim() };
+    if (isNew) {
+      siteData.instagram.posts.push(item);
+    } else {
+      siteData.instagram.posts[idx] = item;
+    }
+    pane.style.display = 'none';
+    renderIgPostsList();
+    markDirty();
+  });
+}
+
+// Source toggle buttons
+document.querySelectorAll('.source-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!siteData.instagram) siteData.instagram = { source: 'behold', posts: [] };
+    siteData.instagram.source = btn.dataset.source;
+    renderInstagramTab();
+    markDirty();
+  });
+});
+
+el('add-ig-btn') && el('add-ig-btn').addEventListener('click', () => openIgEditor(null));
 
 // ──────────────────────────────────────────────────────────────────────────────
 // SETTINGS TAB

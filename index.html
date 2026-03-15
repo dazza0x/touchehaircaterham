@@ -199,8 +199,14 @@
       loading.style.display = 'none';
 
       posts.forEach(function (post) {
-        var imgUrl  = post.sizes && post.sizes.medium ? post.sizes.medium.url : post.mediaUrl;
-        var thumb   = post.mediaType === 'VIDEO' ? (post.thumbnailUrl || imgUrl) : imgUrl;
+        // Prefer Behold CDN URLs (don't expire) over direct Instagram URLs (expire ~24h)
+        var sizes   = post.sizes || {};
+        var imgUrl  = (sizes.medium && sizes.medium.url) ||
+                      (sizes.small  && sizes.small.url)  ||
+                      post.mediaUrl;
+        var thumb   = post.mediaType === 'VIDEO'
+                        ? (post.thumbnailUrl || (sizes.medium && sizes.medium.url) || post.mediaUrl)
+                        : imgUrl;
         var raw     = post.prunedCaption || post.caption || '';
         var caption = raw.length > 110 ? raw.slice(0, 107) + '\u2026' : raw;
         var safe    = caption.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
@@ -213,7 +219,7 @@
         a.setAttribute('aria-label', safe || 'View post on Instagram');
 
         a.innerHTML =
-          '<img src="' + thumb + '" alt="' + safe + '" loading="lazy">' +
+          '<img src="' + thumb + '" alt="' + safe + '" loading="lazy" onerror="this.closest(\'.instagram-grid__item\').style.display=\'none\'">' +
           '<div class="instagram-grid__overlay">' +
             instaSVG +
             (caption ? '<span class="instagram-grid__caption">' + safe + '</span>' : '') +

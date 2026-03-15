@@ -343,6 +343,19 @@
       </div>
 
       <div class="settings-section">
+        <h2>Contact Form</h2>
+        <p class="settings-note" style="margin-bottom:1rem;">Enquiries submitted via the contact page are sent to the endpoint below. Sign up free at <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a>, create a form, and paste the endpoint URL here (e.g. <code>https://formspree.io/f/xxxxxxxx</code>). Publish after saving.</p>
+        <div class="settings-row">
+          <div class="form-group" style="flex:2">
+            <label for="form-endpoint-input">Form Endpoint URL</label>
+            <input type="url" id="form-endpoint-input" placeholder="https://formspree.io/f/xxxxxxxx" autocomplete="off">
+          </div>
+          <button class="btn btn-primary" id="save-form-endpoint-btn">Save</button>
+        </div>
+        <div id="form-endpoint-status" style="margin-top:0.75rem;"></div>
+      </div>
+
+      <div class="settings-section">
         <h2>Export Data</h2>
         <p class="settings-note" style="margin-bottom:1rem;">Download admin-data.json with your current changes (useful as a backup or for manual deployment).</p>
         <button class="btn btn-secondary" id="download-btn">Download admin-data.json</button>
@@ -984,7 +997,17 @@ function loadSettings() {
   } else {
     el('pat-status').innerHTML = '<div class="alert alert-info">No token saved. You can still download admin-data.json manually.</div>';
   }
+  // Contact form endpoint
+  el('form-endpoint-input').value = siteData.formEndpoint || '';
 }
+
+el('save-form-endpoint-btn').addEventListener('click', () => {
+  const val = el('form-endpoint-input').value.trim();
+  siteData.formEndpoint = val;
+  markDirty();
+  el('form-endpoint-status').innerHTML = '<div class="alert alert-success">Endpoint saved — publish to make it live.</div>';
+  setTimeout(() => { el('form-endpoint-status').innerHTML = ''; }, 4000);
+});
 
 el('save-pat-btn').addEventListener('click', () => {
   const val = el('pat-input').value.trim();

@@ -19,11 +19,12 @@
   // ── Hours ─────────────────────────────────────────────────────────────────
   function renderHours(hours, container) {
     if (!container) return;
+    const dark = container.dataset.cmsDark === 'true';
     const rows = hours.map(h => {
       const time = h.closed ? 'Closed' : `${h.opens} – ${h.closes}`;
-      const dimDay  = 'color:rgba(255,255,255,0.5)';
-      const dimTime = h.closed ? 'color:rgba(255,255,255,0.35)' : 'color:rgba(255,255,255,0.85)';
-      return `<tr><td style="${dimDay}">${h.day}</td><td style="${dimTime}">${time}</td></tr>`;
+      const dayStyle  = dark ? ' style="color:rgba(255,255,255,0.5)"'  : '';
+      const timeStyle = dark ? ` style="color:rgba(255,255,255,${h.closed ? '0.35' : '0.85'})"` : '';
+      return `<tr><td${dayStyle}>${h.day}</td><td${timeStyle}>${time}</td></tr>`;
     }).join('');
     container.innerHTML = rows;
   }

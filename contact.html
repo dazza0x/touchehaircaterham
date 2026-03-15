@@ -242,5 +242,60 @@
 
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
+<script>
+(function () {
+  var form   = document.querySelector('.contact-form');
+  var btn    = form.querySelector('[type="submit"]');
+  var status = document.createElement('div');
+  status.style.cssText = 'margin-top:1rem;padding:0.9rem 1rem;border-radius:8px;font-size:0.9rem;display:none;';
+  btn.insertAdjacentElement('afterend', status);
+
+  function showMsg(msg, ok) {
+    status.textContent = msg;
+    status.style.background  = ok ? 'rgba(127,184,150,0.15)' : 'rgba(229,115,115,0.12)';
+    status.style.color       = ok ? '#2d7a4f' : '#c0392b';
+    status.style.border      = ok ? '1px solid rgba(127,184,150,0.35)' : '1px solid rgba(229,115,115,0.35)';
+    status.style.display     = 'block';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    fetch('admin-data.json?v=' + Date.now())
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (data) {
+        var endpoint = data.formEndpoint || '';
+        if (!endpoint) {
+          showMsg('Sorry, the contact form is not yet configured. Please call us on 01883 340771.', false);
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        var payload = {};
+        new FormData(form).forEach(function (v, k) { payload[k] = v; });
+        return fetch(endpoint, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body:    JSON.stringify(payload)
+        });
+      })
+      .then(function (res) {
+        if (!res) return; // endpoint not set — already handled
+        btn.disabled    = false;
+        btn.textContent = 'Send Message';
+        if (res.ok) {
+          showMsg('Thank you — your message has been sent. We\'ll be in touch shortly.', true);
+          form.reset();
+        } else {
+          showMsg('Something went wrong. Please try again or call us on 01883 340771.', false);
+        }
+      })
+      .catch(function () {
+        btn.disabled    = false;
+        btn.textContent = 'Send Message';
+        showMsg('Could not send your message. Please call us on 01883 340771.', false);
+      });
+  });
+}());
+</script>
 </body>
 </html>

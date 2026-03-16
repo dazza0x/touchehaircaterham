@@ -1836,3 +1836,85 @@ p:last-child { margin-bottom: 0; }
   color: var(--text-light);
   font-size: 0.9rem;
 }
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 85px;
+  top: 20px;
+  bottom: 20px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-light), var(--sage), var(--gold-light));
+}
+.timeline__item {
+  display: flex;
+  gap: 1.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  align-items: flex-start;
+}
+.timeline__meta {
+  flex-shrink: 0;
+  width: 70px;
+  padding-top: 0.8rem;
+  text-align: right;
+}
+.timeline__meta::after {
+  content: '';
+  position: absolute;
+  left: 79px;
+  top: 1.05rem;
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--cream);
+  z-index: 1;
+}
+.timeline__year {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+.timeline__body {
+  flex: 1;
+  background: var(--white);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-left: 3px solid var(--gold-light);
+}
+.timeline__item:last-child .timeline__meta::after {
+  background: var(--sage);
+}
+.timeline__item:last-child .timeline__body {
+  border-left-color: var(--sage);
+  background: #f0f3f2;
+}
+.timeline__body h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0 0 0.4rem;
+}
+.timeline__body p {
+  font-size: 0.87rem;
+  color: var(--text-light);
+  line-height: 1.75;
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .timeline::before { display: none; }
+  .timeline__meta::after { display: none; }
+  .timeline__item { flex-direction: column; gap: 0.25rem; margin-bottom: 1.25rem; }
+  .timeline__meta { width: auto; text-align: left; padding-top: 0; }
+  .timeline__body { border-left: 3px solid var(--gold-light); }
+  .timeline__item:last-child .timeline__body { border-left-color: var(--sage); }
+}

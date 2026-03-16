@@ -411,7 +411,7 @@
 <!-- ===== SALONSPY WIDGET ===== -->
 <section class="section section--cream" id="section-reviews" aria-label="Reviews">
   <div class="container" style="text-align:center;">
-    <script async src="https://www.salonspy.com/widgets/v2/dist/js/widget.min.js"></script>
+    <script data-src="https://www.salonspy.com/widgets/v2/dist/js/widget.min.js" data-async="true"></script>
     <salonspy-widget data-token="cb38b69e49a0d4ace4aa6e8e24d82dcb" data-type="salon"></salonspy-widget>
   </div>
 </section>
@@ -532,7 +532,7 @@
     </div>
 
     <div class="footer__bottom">
-      <p>&copy; 2025 Touché Hairdressing. All rights reserved.</p>
+      <p>&copy; 2025 Touché Hairdressing. All rights reserved. <a href="/privacy.html" style="color:inherit;text-decoration:underline;">Privacy Policy</a></p>
       <p>11 Station Avenue, Caterham, Surrey CR3 6LB</p>
     </div>
   </div>
@@ -543,6 +543,15 @@
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
+<!-- ===== COOKIE BANNER ===== -->
+<div id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>We use cookies and third-party embeds (maps, reviews, social feeds) to improve your experience. <a href="/privacy.html">Privacy Policy</a></p>
+  <div class="cookie-banner__btns">
+    <button onclick="cookieAccept()" class="btn btn--gold">Accept</button>
+    <button onclick="cookieDecline()" class="btn btn--outline-dark">Decline</button>
+  </div>
+</div>
+<script src="js/cookies.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
 <script>

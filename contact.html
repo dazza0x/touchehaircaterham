@@ -175,8 +175,11 @@
 
     <!-- Map -->
     <div class="map-wrapper" aria-label="Map showing Touché Hairdressing location">
+      <div class="consent-placeholder" style="display:none;">
+        <p>Map disabled — <button onclick="cookieAccept()" style="background:none;border:none;color:var(--gold);cursor:pointer;text-decoration:underline;font-size:inherit;">accept cookies</button> to view the map.</p>
+      </div>
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2493.7!2d-0.0786!3d51.2843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s11+Station+Avenue%2C+Caterham%2C+CR3+6LB!5e0!3m2!1sen!2suk!4v1"
+        data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2493.7!2d-0.0786!3d51.2843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s11+Station+Avenue%2C+Caterham%2C+CR3+6LB!5e0!3m2!1sen!2suk!4v1"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
@@ -234,12 +237,21 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <p>&copy; 2025 Touché Hairdressing. All rights reserved.</p>
+      <p>&copy; 2025 Touché Hairdressing. All rights reserved. <a href="/privacy.html" style="color:inherit;text-decoration:underline;">Privacy Policy</a></p>
       <p>11 Station Avenue, Caterham, Surrey CR3 6LB</p>
     </div>
   </div>
 </footer>
 
+<!-- ===== COOKIE BANNER ===== -->
+<div id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>We use cookies and third-party embeds (maps, reviews, social feeds) to improve your experience. <a href="/privacy.html">Privacy Policy</a></p>
+  <div class="cookie-banner__btns">
+    <button onclick="cookieAccept()" class="btn btn--gold">Accept</button>
+    <button onclick="cookieDecline()" class="btn btn--outline-dark">Decline</button>
+  </div>
+</div>
+<script src="js/cookies.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>
 <script>

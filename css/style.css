@@ -1785,3 +1785,46 @@ p:last-child { margin-bottom: 0; }
 
   .instagram-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
 }
+
+/* ===== COOKIE BANNER ===== */
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--dark);
+  color: rgba(255,255,255,0.85);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  z-index: 9999;
+  border-top: 2px solid var(--gold);
+  flex-wrap: wrap;
+}
+#cookie-banner p {
+  margin: 0;
+  font-size: 0.85rem;
+  flex: 1;
+  min-width: 200px;
+}
+#cookie-banner a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+.cookie-banner__btns {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.consent-placeholder {
+  display: none;
+  background: var(--warm-white);
+  border: 1px solid var(--grey-light);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}

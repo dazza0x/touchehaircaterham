@@ -115,33 +115,64 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="tel:01883340771" class="btn btn--gold">Call 01883 340771</a>
 </nav>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO CAROUSEL ===== -->
 <section class="hero" id="section-hero" aria-label="Welcome to Touché Hairdressing">
-  <!-- Replace .hero::before gradient with a real background image via inline style:
-       style="background: url('images/hero.jpg') center/cover no-repeat;" -->
-  <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
-  <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
-  <div class="hero__glow hero__glow--3" aria-hidden="true"></div>
+  <img class="carousel-slide active" src="Images/header%201%201920%20x%20860%20px.jpg" alt="Expert hair styling at Touché Caterham" loading="eager">
+  <img class="carousel-slide" src="Images/header%202%201920%20x%20860%20px.jpg" alt="Hair colour services at Touché" loading="lazy">
+  <img class="carousel-slide" src="Images/header%203%201920%20x%20860%20px.jpg" alt="Inside Touché salon Caterham" loading="lazy">
+  <img class="carousel-slide" src="Images/header%204%201920%20x%20860%20px.jpg" alt="Hair styling at Touché Caterham" loading="lazy">
+  <img class="carousel-slide" src="Images/header%205%201920%20x%20860%20px.jpg" alt="Award-winning stylists at Touché Caterham" loading="lazy">
+  <img class="carousel-slide" src="Images/header%206%201920%20x%20860%20px.jpg" alt="Touché Hairdressing Caterham salon" loading="lazy">
 
-  <div class="hero__inner">
-    <div class="hero__content">
-      <div class="hero__eyebrow">Award-Winning Hair Salon · Caterham, Surrey</div>
-      <h1 class="hero__title">Hair That<br><em>Turns Heads.</em></h1>
-      <p class="hero__subtitle">Over 40 years of expert colouring, cutting &amp; styling in the heart of Caterham — trusted by clients across Surrey.</p>
-      <div class="hero__ctas">
-        <a href="https://s-iq.co/BookingPortal/dist/?salonid=5d4b7112-81b5-464b-9ccf-8835ad6793a3&amp;tab=contact" class="btn btn--gold" target="_blank" rel="noopener">Book an Appointment</a>
-        <a href="services.html" class="btn btn--outline">View Services &amp; Prices</a>
-      </div>
-      <p style="margin-top:0.75rem;font-size:0.82rem;"><a href="tel:01883340771" style="color:rgba(255,255,255,0.65);">or call 01883 340771</a></p>
-    </div>
+  <div class="hero-overlay"></div>
 
-    <div class="hero__image">
-      <img src="Images/ths%20lady%20square.jpg" alt="Touché Hairdressing Caterham — expert styling" loading="eager">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 1985 · Caterham, Surrey</p>
+    <h1 class="hero-heading">Hair That<br><em>Turns Heads.</em></h1>
+    <p class="hero-sub">Over 40 years of expert colouring, cutting &amp; styling in the heart of Caterham — trusted by clients across Surrey.</p>
+    <div class="hero-actions">
+      <a href="https://s-iq.co/BookingPortal/dist/?salonid=5d4b7112-81b5-464b-9ccf-8835ad6793a3&amp;tab=contact" class="btn-hero-primary" target="_blank" rel="noopener">Book an Appointment</a>
+      <a href="services.html" class="btn-hero-ghost">View Services &amp; Prices</a>
     </div>
+    <p style="margin-top:0.75rem;font-size:0.82rem;"><a href="tel:01883340771" style="color:rgba(255,255,255,0.65);">or call 01883 340771</a></p>
   </div>
 
-  <div class="hero__scroll" aria-hidden="true">Scroll</div>
+  <div class="hero-badge">
+    <div class="years">40+</div>
+    <div class="label">Years of Excellence</div>
+  </div>
+
+  <div class="hero-progress" id="heroProgress"></div>
+
+  <div class="hero-dots">
+    <button class="hero-dot active" aria-label="Slide 1"></button>
+    <button class="hero-dot" aria-label="Slide 2"></button>
+    <button class="hero-dot" aria-label="Slide 3"></button>
+    <button class="hero-dot" aria-label="Slide 4"></button>
+    <button class="hero-dot" aria-label="Slide 5"></button>
+    <button class="hero-dot" aria-label="Slide 6"></button>
+  </div>
 </section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item">✦ Award-Winning Stylists</div>
+    <div class="ticker-item">✦ Oligo Colour Specialists</div>
+    <div class="ticker-item">✦ OPC Hair Care &amp; Treatments</div>
+    <div class="ticker-item">✦ The Crown Smoothing Treatment</div>
+    <div class="ticker-item">✦ Easy Online Booking</div>
+    <div class="ticker-item">✦ Eco Friendly Salon</div>
+    <div class="ticker-item">✦ Vegan Products</div>
+    <div class="ticker-item">✦ Award-Winning Stylists</div>
+    <div class="ticker-item">✦ Oligo Colour Specialists</div>
+    <div class="ticker-item">✦ OPC Hair Care &amp; Treatments</div>
+    <div class="ticker-item">✦ The Crown Smoothing Treatment</div>
+    <div class="ticker-item">✦ Easy Online Booking</div>
+    <div class="ticker-item">✦ Eco Friendly Salon</div>
+    <div class="ticker-item">✦ Vegan Products</div>
+  </div>
+</div>
 
 <!-- ===== INTRO STRIP ===== -->
 <div class="intro-strip">
@@ -237,6 +268,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ===== INSTAGRAM FEED ===== -->
+<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
 <section class="section section--cream" id="section-instagram" aria-label="Instagram feed">
   <div class="container">
 
@@ -251,8 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p style="color:var(--text-light);max-width:500px;margin:0 auto;">Fresh looks, colour transformations and behind-the-scenes from our Caterham salon.</p>
     </div>
 
-    <div class="instagram-grid" id="instagram-grid" aria-label="Instagram photos"></div>
-    <div class="instagram-grid__loading" id="instagram-loading">Loading latest posts&hellip;</div>
+    <div class="commonninja_component pid-432ccef7-cc58-451c-9a2c-a123068f194a"></div>
 
     <div class="instagram-feed__cta">
       <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" class="btn btn--gold">Follow Us on Instagram</a>
@@ -260,87 +291,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   </div>
 </section>
-
-<script>
-(function () {
-  var BEHOLD_URL = 'https://feeds.behold.so/1wCZfSNkmTG5dPE8pMcz';
-  var DATA_URL   = 'admin-data.json';
-  var grid       = document.getElementById('instagram-grid');
-  var loading    = document.getElementById('instagram-loading');
-
-  var instaSVG = '<svg class="instagram-grid__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>';
-  var playSVG  = '<div class="instagram-grid__video-badge" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>';
-
-  function makeItem(thumb, caption, link, isVideo) {
-    var safe = (caption || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-    var a = document.createElement('a');
-    a.href      = link || 'https://www.instagram.com/touchehairdressingcaterham/';
-    a.target    = '_blank';
-    a.rel       = 'noopener';
-    a.className = 'instagram-grid__item';
-    a.setAttribute('aria-label', safe || 'View on Instagram');
-    a.innerHTML =
-      '<img src="' + thumb + '" alt="' + safe + '" loading="lazy" onerror="this.closest(\'.instagram-grid__item\').style.display=\'none\'">' +
-      '<div class="instagram-grid__overlay">' + instaSVG +
-        (safe ? '<span class="instagram-grid__caption">' + safe + '</span>' : '') +
-      '</div>' +
-      (isVideo ? playSVG : '');
-    return a;
-  }
-
-  function renderBehold(data) {
-    var posts = (data.posts || data).slice(0, 12);
-    loading.style.display = 'none';
-    posts.forEach(function (post) {
-      var sizes  = post.sizes || {};
-      var imgUrl = (sizes.medium && sizes.medium.url) || (sizes.small && sizes.small.url) || post.mediaUrl;
-      var thumb  = post.mediaType === 'VIDEO' ? (post.thumbnailUrl || imgUrl) : imgUrl;
-      var raw    = post.prunedCaption || post.caption || '';
-      var cap    = raw.length > 110 ? raw.slice(0, 107) + '\u2026' : raw;
-      grid.appendChild(makeItem(thumb, cap, post.permalink, post.mediaType === 'VIDEO'));
-    });
-  }
-
-  function renderManual(posts) {
-    loading.style.display = 'none';
-    if (!posts || !posts.length) {
-      loading.innerHTML = '<p style="color:var(--text-light);text-align:center;">Gallery coming soon — <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" style="color:var(--gold);">follow us on Instagram</a>.</p>';
-      loading.style.display = '';
-      return;
-    }
-    posts.forEach(function (post) {
-      var cap = (post.caption || '').length > 110 ? post.caption.slice(0, 107) + '\u2026' : (post.caption || '');
-      grid.appendChild(makeItem(post.imageUrl, cap, post.link, false));
-    });
-  }
-
-  function showError() {
-    loading.innerHTML = '<p style="color:var(--text-light);">Unable to load feed — <a href="https://www.instagram.com/touchehairdressingcaterham/" target="_blank" rel="noopener" style="color:var(--gold);">visit us on Instagram</a>.</p>';
-  }
-
-  // Check admin-data first to decide source, fall back to Behold if unavailable
-  fetch(DATA_URL + '?v=' + Date.now())
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-    .then(function (data) {
-      var ig = data.instagram || { source: 'behold', posts: [] };
-      if (ig.source === 'manual') {
-        renderManual(ig.posts);
-      } else {
-        fetch(BEHOLD_URL)
-          .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-          .then(renderBehold)
-          .catch(showError);
-      }
-    })
-    .catch(function () {
-      // admin-data.json unavailable — go straight to Behold
-      fetch(BEHOLD_URL)
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-        .then(renderBehold)
-        .catch(showError);
-    });
-}());
-</script>
 
 <!-- ===== WHY CHOOSE US ===== -->
 <section class="section section--cream" id="section-why" aria-labelledby="why-heading">
@@ -562,6 +512,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button onclick="cookieDecline()" class="btn btn--outline-dark">Decline</button>
   </div>
 </div>
+<script>
+(function () {
+  var slides = document.querySelectorAll('.carousel-slide');
+  var dots = document.querySelectorAll('.hero-dot');
+  var progress = document.getElementById('heroProgress');
+  var current = 0;
+  var slideTimer;
+
+  function startProgress() {
+    progress.classList.remove('running');
+    void progress.offsetWidth;
+    progress.classList.add('running');
+  }
+
+  function goToSlide(next) {
+    if (next === current) return;
+    clearTimeout(slideTimer);
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    slides[next].classList.add('active');
+    dots[next].classList.add('active');
+    current = next;
+    startProgress();
+    slideTimer = setTimeout(function () { goToSlide((current + 1) % slides.length); }, 4800);
+  }
+
+  dots.forEach(function (dot, i) {
+    dot.addEventListener('click', function () { goToSlide(i); });
+  });
+
+  startProgress();
+  slideTimer = setTimeout(function () { goToSlide(1); }, 4800);
+}());
+</script>
 <script src="js/cookies.js"></script>
 <script src="js/main.js"></script>
 <script src="js/cms.js"></script>

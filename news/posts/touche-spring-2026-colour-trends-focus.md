@@ -41,3 +41,4 @@ We'd always recommend booking your next appointment before you leave the salon. 
 If you're not sure which direction suits you, that's exactly what we're here for. A quick consultation — in person or over the phone — means we can look at your base colour, your lifestyle and what you're hoping to achieve before we do a thing.
 
 Spring is a lovely time to try something a little different. We'd love to help you find it.
+

@@ -61,6 +61,14 @@
       font-size: 0.82rem;
     }
 
+    /* ── Feed checkboxes ── */
+    .feed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+    .feed-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: #8aab96; cursor: pointer; }
+    .feed-item input[type="checkbox"] { accent-color: #7fb896; width: 13px; height: 13px; cursor: pointer; }
+    .headlines-used { margin-top: 0.5rem; padding: 0.5rem 0.7rem; background: #0f1410; border: 1px solid rgba(127,184,150,0.15); border-radius: 6px; }
+    .headlines-used p { font-size: 0.72rem; color: #8aab96; margin: 0 0 0.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .headlines-used li { font-size: 0.75rem; color: #a3cdb5; margin: 0.15rem 0; }
+
     /* ── AI Draft panel ── */
     #ai-panel-toggle {
       position: fixed;
@@ -285,63 +293,42 @@
 (function () {
   'use strict';
 
-  // ── Brand context for Claude prompt ──
-  const BRAND_CONTEXT = `You are writing blog posts for Touché Hairdressing, a trusted independent hair salon in Caterham, Surrey, established in 1985.
-
-Voice & Tone — "Helen" persona:
-- Senior stylist, 52, 25+ years experience, deeply rooted in Caterham
-- Warm, assured, precise — never gushing or over-excited
-- Uses clear, confident language. Never says "OMG", "passionate about your journey", "revolutionary", or uses excessive exclamation marks
-- Writes like a real expert talking to a client: informed, direct, warm
-- Community-proud. Caterham is home, not just a location.
-
-Style rules:
-- Em dashes (—) for parenthetical phrases
-- Short, punchy sentences mixed with longer explanatory ones
-- Subheadings with ## that are descriptive, not clickbait
-- Never oversell. Let the expertise speak.
-- British English spelling (colour, emphasise, recognise, etc.)
-- No hashtags, no emojis in body text`;
-
   // ── Storage helpers ──
-  function getKey() { return localStorage.getItem('touche_claude_api_key') || ''; }
-  function saveKey(k) { localStorage.setItem('touche_claude_api_key', k); }
+  function getEndpoint() { return localStorage.getItem('touche_vercel_endpoint') || ''; }
+  function saveEndpoint(u) { localStorage.setItem('touche_vercel_endpoint', u.replace(/\/$/, '')); }
 
-  // ── DOM elements ──
-  var toggle, panel, closeBtn, keySection, keyInput, saveKeyBtn, topicInput, toneSelect,
-      extraInput, generateBtn, status, resultSection, resultBody, resultExcerpt,
-      copyBodyBtn, copyExcerptBtn;
+  var topicInput, toneSelect, extraInput, generateBtn, statusEl,
+      resultSection, resultBody, resultExcerpt, copyBodyBtn, copyExcerptBtn,
+      endpointInput, saveEndpointBtn, endpointSection, headlinesUsed;
 
   function buildPanel() {
-    // Toggle button
-    toggle = document.createElement('button');
-    toggle.id = 'ai-panel-toggle';
+    var toggle = document.createElement('button');
+    toggle.id  = 'ai-panel-toggle';
     toggle.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> AI Draft';
-    toggle.addEventListener('click', function () {
-      panel.classList.toggle('open');
-    });
 
-    // Panel
-    panel = document.createElement('div');
-    panel.id = 'ai-panel';
+    var panel = document.createElement('div');
+    panel.id  = 'ai-panel';
     panel.innerHTML = `
       <div class="ai-panel__header">
         <h2>✦ AI Draft Generator</h2>
         <button class="ai-panel__close" id="ai-close-btn" title="Close">✕</button>
       </div>
       <div class="ai-panel__body">
-        <div class="ai-field" id="ai-key-section">
-          <label>Claude API Key</label>
+
+        <div class="ai-field" id="ai-endpoint-section">
+          <label>Vercel Endpoint URL</label>
           <div class="key-row">
-            <input type="password" id="ai-key-input" placeholder="sk-ant-…">
-            <button class="btn-key" id="ai-save-key-btn">Save</button>
+            <input type="text" id="ai-endpoint-input" placeholder="https://touchehaircaterham.vercel.app">
+            <button class="btn-key" id="ai-save-endpoint-btn">Save</button>
           </div>
-          <p style="font-size:0.75rem;color:#8aab96;margin:0.3rem 0 0;">Stored in browser only. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:#7fb896;">console.anthropic.com</a>.</p>
+          <p style="font-size:0.75rem;color:#8aab96;margin:0.3rem 0 0;">Paste your Vercel project URL — set once and forgotten.</p>
         </div>
+
         <div class="ai-field">
           <label>Topic / Headline Idea</label>
-          <input type="text" id="ai-topic-input" placeholder="e.g. Spring 2026 colour trends — warm tones and coppers">
+          <input type="text" id="ai-topic-input" placeholder="e.g. Summer 2026 colour — warm blondes and coppers">
         </div>
+
         <div class="ai-field">
           <label>Tone</label>
           <select id="ai-tone-select">
@@ -351,10 +338,23 @@ Style rules:
             <option value="seasonal">Seasonal — trend-led, timely</option>
           </select>
         </div>
+
+        <div class="ai-field">
+          <label>News Sources</label>
+          <div class="feed-grid">
+            <label class="feed-item"><input type="checkbox" value="hji" checked> HJ (UK)</label>
+            <label class="feed-item"><input type="checkbox" value="creativeHead" checked> Creative HEAD (UK)</label>
+            <label class="feed-item"><input type="checkbox" value="modernSalon"> Modern Salon (US)</label>
+            <label class="feed-item"><input type="checkbox" value="salonToday"> Salon Today (US)</label>
+            <label class="feed-item"><input type="checkbox" value="estetica"> Estetica (EU)</label>
+          </div>
+        </div>
+
         <div class="ai-field">
           <label>Extra context (optional)</label>
-          <textarea id="ai-extra-input" placeholder="e.g. Mention balayage and curtain bangs. Focus on low-maintenance styles."></textarea>
+          <textarea id="ai-extra-input" placeholder="e.g. Mention balayage. Focus on low-maintenance styles."></textarea>
         </div>
+
         <div id="ai-result-section">
           <label>Generated Excerpt</label>
           <div id="ai-result-excerpt"></div>
@@ -366,7 +366,12 @@ Style rules:
           <div class="copy-row">
             <button class="btn-copy" id="ai-copy-body-btn">Copy body</button>
           </div>
+          <div id="ai-headlines-used" class="headlines-used" style="display:none;">
+            <p>Headlines used as source material</p>
+            <ul id="ai-headlines-list"></ul>
+          </div>
         </div>
+
       </div>
       <div class="ai-panel__footer">
         <p id="ai-status"></p>
@@ -376,51 +381,48 @@ Style rules:
     document.body.appendChild(toggle);
     document.body.appendChild(panel);
 
-    // Wire up elements
-    closeBtn       = document.getElementById('ai-close-btn');
-    keySection     = document.getElementById('ai-key-section');
-    keyInput       = document.getElementById('ai-key-input');
-    saveKeyBtn     = document.getElementById('ai-save-key-btn');
-    topicInput     = document.getElementById('ai-topic-input');
-    toneSelect     = document.getElementById('ai-tone-select');
-    extraInput     = document.getElementById('ai-extra-input');
-    generateBtn    = document.getElementById('ai-generate-btn');
-    status         = document.getElementById('ai-status');
-    resultSection  = document.getElementById('ai-result-section');
-    resultBody     = document.getElementById('ai-result-body');
-    resultExcerpt  = document.getElementById('ai-result-excerpt');
-    copyBodyBtn    = document.getElementById('ai-copy-body-btn');
-    copyExcerptBtn = document.getElementById('ai-copy-excerpt-btn');
+    toggle.addEventListener('click', function () { panel.classList.toggle('open'); });
+    document.getElementById('ai-close-btn').addEventListener('click', function () { panel.classList.remove('open'); });
 
-    // Show/hide API key section
-    if (!getKey()) {
-      keySection.classList.add('visible');
-    } else {
-      keyInput.value = '••••••••••••••••';
+    endpointSection  = document.getElementById('ai-endpoint-section');
+    endpointInput    = document.getElementById('ai-endpoint-input');
+    saveEndpointBtn  = document.getElementById('ai-save-endpoint-btn');
+    topicInput       = document.getElementById('ai-topic-input');
+    toneSelect       = document.getElementById('ai-tone-select');
+    extraInput       = document.getElementById('ai-extra-input');
+    generateBtn      = document.getElementById('ai-generate-btn');
+    statusEl         = document.getElementById('ai-status');
+    resultSection    = document.getElementById('ai-result-section');
+    resultBody       = document.getElementById('ai-result-body');
+    resultExcerpt    = document.getElementById('ai-result-excerpt');
+    copyBodyBtn      = document.getElementById('ai-copy-body-btn');
+    copyExcerptBtn   = document.getElementById('ai-copy-excerpt-btn');
+    headlinesUsed    = document.getElementById('ai-headlines-used');
+
+    // Show/hide endpoint section
+    var saved = getEndpoint();
+    if (saved) {
+      endpointInput.value = saved;
+      endpointSection.style.display = 'none';
     }
 
-    closeBtn.addEventListener('click', function () { panel.classList.remove('open'); });
-
-    saveKeyBtn.addEventListener('click', function () {
-      var k = keyInput.value.trim();
-      if (!k || k.startsWith('•')) return;
-      saveKey(k);
-      keySection.classList.remove('visible');
-      keyInput.value = '••••••••••••••••';
-      setStatus('API key saved.', 'success');
+    saveEndpointBtn.addEventListener('click', function () {
+      var u = endpointInput.value.trim();
+      if (!u) return;
+      saveEndpoint(u);
+      endpointSection.style.display = 'none';
+      setStatus('Endpoint saved.', 'success');
     });
 
-    // Allow re-entering key by clicking on masked input
-    keyInput.addEventListener('focus', function () {
-      if (keyInput.value.startsWith('•')) {
-        keyInput.value = '';
-        keySection.classList.add('visible');
-      }
+    // Allow re-editing endpoint by double-clicking the toggle button
+    toggle.addEventListener('dblclick', function () {
+      endpointSection.style.display = 'block';
+      panel.classList.add('open');
     });
 
     copyBodyBtn.addEventListener('click', function () {
       navigator.clipboard.writeText(resultBody.textContent).then(function () {
-        setStatus('Body copied to clipboard — paste into the Body field in the editor above.', 'success');
+        setStatus('Body copied — paste into the Body field in the editor above.', 'success');
       });
     });
 
@@ -434,15 +436,15 @@ Style rules:
   }
 
   function setStatus(msg, type) {
-    status.textContent = msg;
-    status.className = type || '';
+    statusEl.textContent = msg;
+    statusEl.className   = type || '';
   }
 
   function generate() {
-    var apiKey = getKey();
-    if (!apiKey) {
-      keySection.classList.add('visible');
-      setStatus('Please save your Claude API key first.', 'error');
+    var endpoint = getEndpoint();
+    if (!endpoint) {
+      endpointSection.style.display = 'block';
+      setStatus('Please save your Vercel endpoint URL first.', 'error');
       return;
     }
     var topic = topicInput.value.trim();
@@ -452,58 +454,46 @@ Style rules:
       return;
     }
 
-    var tone = toneSelect.value;
-    var extra = extraInput.value.trim();
-
-    var toneGuide = {
-      informative: 'Informative and educational. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.',
-      warm:        'Warm and community-focused. Dial: Warmth 4/5, Authority 3/5, Formality 2/5.',
-      product:     'Product introduction — informed enthusiasm, not hype. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.',
-      seasonal:    'Seasonal/trend-led — expert insight on what\'s happening now. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.'
-    };
-
-    var userPrompt = 'Write a blog post for the Touché Hairdressing website.\n\n'
-      + 'Topic: ' + topic + '\n'
-      + 'Tone: ' + toneGuide[tone] + '\n'
-      + (extra ? 'Additional context: ' + extra + '\n' : '')
-      + '\nOutput format — respond with ONLY this structure, no extra text:\n'
-      + 'EXCERPT: [one or two sentence summary, ~160 characters, no quotes]\n'
-      + 'BODY:\n[full article body in Markdown, starting with an introductory paragraph, then ## subheadings, 300–500 words]';
+    // Collect selected feeds
+    var selectedFeeds = Array.from(
+      document.querySelectorAll('#ai-panel input[type="checkbox"]:checked')
+    ).map(function (cb) { return cb.value; });
 
     generateBtn.disabled = true;
     resultSection.classList.remove('visible');
-    setStatus('Generating — this takes about 10 seconds…');
+    headlinesUsed.style.display = 'none';
+    setStatus('Fetching headlines and generating — about 15 seconds…');
 
-    fetch('https://api.anthropic.com/v1/messages', {
+    fetch(endpoint + '/api/generate', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1200,
-        system: BRAND_CONTEXT,
-        messages: [{ role: 'user', content: userPrompt }]
-      })
+        topic:         topic,
+        tone:          toneSelect.value,
+        extra:         extraInput.value.trim(),
+        selectedFeeds: selectedFeeds,
+      }),
     })
     .then(function (r) {
-      if (!r.ok) return r.json().then(function (e) { throw new Error(e.error && e.error.message || 'API error ' + r.status); });
+      if (!r.ok) return r.json().then(function (e) { throw new Error(e.error || 'Server error ' + r.status); });
       return r.json();
     })
     .then(function (data) {
-      var text = data.content && data.content[0] && data.content[0].text || '';
-      var excerptMatch = text.match(/EXCERPT:\s*(.+?)(?:\n|$)/);
-      var bodyMatch    = text.match(/BODY:\s*\n([\s\S]+)/);
-      var excerpt = excerptMatch ? excerptMatch[1].trim() : '';
-      var body    = bodyMatch    ? bodyMatch[1].trim()    : text;
-
-      resultExcerpt.textContent = excerpt || '(No excerpt generated — copy the body and write your own)';
-      resultBody.textContent    = body;
+      resultExcerpt.textContent = data.excerpt || '(No excerpt — write your own)';
+      resultBody.textContent    = data.body    || '';
       resultSection.classList.add('visible');
-      setStatus('Draft ready — copy the fields below and paste them into the editor above.', 'success');
+
+      // Show which headlines were used
+      if (data.headlines && data.headlines.length) {
+        var list = document.getElementById('ai-headlines-list');
+        list.innerHTML = data.headlines.map(function (h) {
+          return '<li>[' + h.source + '] ' + h.title + '</li>';
+        }).join('');
+        headlinesUsed.style.display = 'block';
+        setStatus('Draft ready — based on ' + data.headlines.length + ' real headlines. Copy the fields below.', 'success');
+      } else {
+        setStatus('Draft ready (no live headlines retrieved — AI used training knowledge). Copy the fields below.', 'success');
+      }
     })
     .catch(function (err) {
       setStatus('Error: ' + err.message, 'error');
@@ -513,7 +503,7 @@ Style rules:
     });
   }
 
-  // ── Check config and initialise ──
+  // ── Check config and initialise ──────────────────────────────────────────
   function checkConfig() {
     fetch('config.yml')
       .then(function (r) { return r.text(); })
@@ -525,19 +515,9 @@ Style rules:
       .catch(function () {});
   }
 
-  // Wait for CMS to initialise before adding the panel
-  if (typeof window.CMS !== 'undefined') {
-    buildPanel();
-    checkConfig();
-  } else {
-    window.addEventListener('load', function () {
-      // Small delay to let Decap CMS render
-      setTimeout(function () {
-        buildPanel();
-        checkConfig();
-      }, 500);
-    });
-  }
+  window.addEventListener('load', function () {
+    setTimeout(function () { buildPanel(); checkConfig(); }, 500);
+  });
 }());
 </script>
 </body>

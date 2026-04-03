@@ -20,9 +20,12 @@ const posts = files.map(file => {
   const { data } = matter(content);
 
   // Format display date e.g. "11 October 2025"
+  // Decap CMS may save dates as "2026-04-03T00:00:00.000Z" or plain "2026-04-03"
   let dateDisplay = '';
+  let dateISO = '';
   if (data.date) {
-    const d = new Date(data.date + 'T12:00:00Z');
+    dateISO = String(data.date).slice(0, 10); // always get YYYY-MM-DD part
+    const d = new Date(dateISO + 'T12:00:00Z');
     dateDisplay = d.toLocaleDateString('en-GB', {
       day: 'numeric', month: 'long', year: 'numeric'
     });
@@ -33,7 +36,7 @@ const posts = files.map(file => {
   return {
     slug,
     title:       data.title       || slug,
-    date:        data.date        || '',
+    date:        dateISO,
     dateDisplay,
     category,
     eyebrow:     `${category} · ${dateDisplay.replace(/\d+\s/, '').replace(/\s\d{4}$/, m => m)}`,

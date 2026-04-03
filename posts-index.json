@@ -28,20 +28,6 @@
     "ctaBody": "Ask about an Oligo Professionnel treatment at your next visit to our Caterham salon."
   },
   {
-    "slug": "the-crown-professional",
-    "title": "The Crown Professional — Advanced Smoothing & Straightening",
-    "date": "2025-04-09",
-    "dateDisplay": "9 April 2025",
-    "category": "Products",
-    "eyebrow": "Products · April 2025",
-    "excerpt": "Discover The Crown Professional smoothing system — advanced keratin science for frizz-free, manageable hair at our Caterham salon.",
-    "readTime": "1 min read",
-    "heroSubtitle": "Advanced keratin smoothing — frizz-free, manageable hair that lasts up to six months.",
-    "image": null,
-    "ctaTitle": "Ready for Frizz-Free Hair?",
-    "ctaBody": "Smoothing treatments start from £200. Book a consultation at our Caterham salon to discuss whether this treatment is right for your hair."
-  },
-  {
     "slug": "organethic-pure-care",
     "title": "Organethic Pure Care — Ethical Beauty That Delivers",
     "date": "2025-04-09",
@@ -54,5 +40,19 @@
     "image": null,
     "ctaTitle": "Ask About an OPC Treatment",
     "ctaBody": "Luxury hair treatments using Organethic Pure Care start from £20. Available as a standalone service or as an add-on to any colour or cutting appointment."
+  },
+  {
+    "slug": "the-crown-professional",
+    "title": "The Crown Professional — Advanced Smoothing & Straightening",
+    "date": "2025-04-09",
+    "dateDisplay": "9 April 2025",
+    "category": "Products",
+    "eyebrow": "Products · April 2025",
+    "excerpt": "Discover The Crown Professional smoothing system — advanced keratin science for frizz-free, manageable hair at our Caterham salon.",
+    "readTime": "1 min read",
+    "heroSubtitle": "Advanced keratin smoothing — frizz-free, manageable hair that lasts up to six months.",
+    "image": null,
+    "ctaTitle": "Ready for Frizz-Free Hair?",
+    "ctaBody": "Smoothing treatments start from £200. Book a consultation at our Caterham salon to discuss whether this treatment is right for your hair."
   }
 ]

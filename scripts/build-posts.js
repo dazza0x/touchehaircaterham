@@ -24,7 +24,15 @@ const posts = files.map(file => {
   let dateDisplay = '';
   let dateISO = '';
   if (data.date) {
-    dateISO = String(data.date).slice(0, 10); // always get YYYY-MM-DD part
+    // gray-matter parses bare YAML dates (e.g. 2026-04-03) as JS Date objects
+    if (data.date instanceof Date) {
+      const y = data.date.getUTCFullYear();
+      const m = String(data.date.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(data.date.getUTCDate()).padStart(2, '0');
+      dateISO = `${y}-${m}-${d}`;
+    } else {
+      dateISO = String(data.date).slice(0, 10);
+    }
     const d = new Date(dateISO + 'T12:00:00Z');
     dateDisplay = d.toLocaleDateString('en-GB', {
       day: 'numeric', month: 'long', year: 'numeric'

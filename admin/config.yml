@@ -11,7 +11,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 backend:
-  name: git-gateway
+  name: github
   repo: dazza0x/touchehaircaterham
   branch: master
   base_url: https://sveltia-cms-auth.dazchapman.workers.dev

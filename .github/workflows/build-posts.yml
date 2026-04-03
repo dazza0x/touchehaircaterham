@@ -1,0 +1,35 @@
+name: Build Posts Index
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'news/posts/**'
+      - 'scripts/build-posts.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install gray-matter
+        run: npm install gray-matter --no-save
+
+      - name: Build posts-index.json
+        run: node scripts/build-posts.js
+
+      - name: Commit posts-index.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts-index.json
+          git diff --staged --quiet || git commit -m "chore: rebuild posts-index.json [skip ci]"
+          git push

@@ -1,0 +1,108 @@
+# ─── Decap CMS Configuration — Touché Hairdressing ───────────────────────────
+#
+# SETUP REQUIRED:
+# 1. Create a GitHub OAuth App at github.com/settings/developers
+#    - Homepage URL: https://www.touchehaircaterham.com
+#    - Callback URL: https://YOUR-WORKER.workers.dev/callback
+# 2. Deploy the sveltia-cms-auth Cloudflare Worker:
+#    github.com/sveltia/sveltia-cms-auth
+#    Set env vars: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ALLOWED_DOMAINS
+# 3. Replace the base_url below with your deployed Worker URL.
+# ──────────────────────────────────────────────────────────────────────────────
+
+backend:
+  name: git-gateway
+  repo: dazza0x/touchehaircaterham
+  branch: master
+  base_url: https://sveltia-cms-auth.dazchapman.workers.dev
+
+
+site_url: https://www.touchehaircaterham.com
+display_url: https://www.touchehaircaterham.com
+
+# ─── Media ────────────────────────────────────────────────────────────────────
+media_folder: "Images/blog"
+public_folder: "/Images/blog"
+
+# ─── Collections ──────────────────────────────────────────────────────────────
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    label_singular: "Post"
+    folder: "news/posts"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title", "category"]
+    view_filters:
+      - label: "Trends"
+        field: category
+        pattern: "Trends"
+      - label: "Products"
+        field: category
+        pattern: "Products"
+      - label: "Salon News"
+        field: category
+        pattern: "Salon News"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_only: true
+
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Trends"
+          - "Products"
+          - "Salon News"
+          - "Education"
+          - "Community"
+        default: "Trends"
+
+      - label: "Excerpt"
+        name: "excerpt"
+        widget: "text"
+        hint: "A short summary shown on the news listing page (1–2 sentences, ~160 characters)."
+
+      - label: "Read Time"
+        name: "readTime"
+        widget: "string"
+        default: "2 min read"
+        hint: "e.g. '2 min read' or '3 min read'"
+
+      - label: "Hero Subtitle"
+        name: "heroSubtitle"
+        widget: "string"
+        required: false
+        hint: "Shown below the title in the page hero. Leave blank to omit."
+
+      - label: "Hero Image"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Optional header image. If omitted, the category colour block is used."
+
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+
+      - label: "CTA Heading"
+        name: "ctaTitle"
+        widget: "string"
+        required: false
+        default: "Book an Appointment"
+        hint: "Call-to-action heading at the bottom of the post."
+
+      - label: "CTA Body"
+        name: "ctaBody"
+        widget: "text"
+        required: false
+        hint: "Supporting text under the CTA heading."

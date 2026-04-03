@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
   <title id="meta-title">Article | Touché Hairdressing Caterham</title>
   <meta name="description" id="meta-desc" content="News and articles from Touché Hairdressing, Caterham.">
   <link rel="canonical" id="meta-canonical" href="https://www.touchehaircaterham.com/news/">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <meta property="og:type" content="article">
   <meta property="og:url" id="og-url" content="https://www.touchehaircaterham.com/news/">
@@ -165,58 +166,87 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="../js/cms.js"></script>
 <script>
 (function () {
-  const params = new URLSearchParams(location.search);
-  const id = params.get('id');
+  'use strict';
 
-  if (!id) { showNotFound(); return; }
+  var params = new URLSearchParams(location.search);
+  var slug   = params.get('slug') || params.get('id'); // support legacy ?id= links
 
-  fetch('../admin-data.json')
-    .then(r => r.ok ? r.json() : Promise.reject())
-    .then(data => {
-      const post = data.posts.find(p => p.id === id);
-      if (!post) { showNotFound(); return; }
+  if (!slug) { showNotFound(); return; }
 
-      // Redirect to static page if available
-      if (post.staticPage) {
-        location.replace(post.staticPage);
-        return;
-      }
+  // ── Minimal front-matter parser (no dependencies) ──
+  function parseFrontMatter(text) {
+    var match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+    if (!match) return { data: {}, content: text };
+    var data = {};
+    match[1].split(/\r?\n/).forEach(function (line) {
+      var m = line.match(/^(\w+):\s*"?(.+?)"?\s*$/);
+      if (m) data[m[1]] = m[2];
+    });
+    return { data: data, content: match[2] };
+  }
 
-      // Update meta
-      document.getElementById('meta-title').textContent      = post.title + ' | Touché Hairdressing Caterham';
-      document.getElementById('meta-desc').content           = post.excerpt;
-      document.getElementById('meta-canonical').href         = 'https://www.touchehaircaterham.com/news/post.html?id=' + id;
-      document.getElementById('og-url').content              = 'https://www.touchehaircaterham.com/news/post.html?id=' + id;
-      document.getElementById('og-title').content            = post.title;
-      document.getElementById('og-desc').content             = post.excerpt;
+  function formatDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso + 'T12:00:00Z');
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
 
-      // Hero
-      document.getElementById('breadcrumb-title').textContent = post.title.replace(/ —.*$/, '');
-      document.getElementById('post-eyebrow').textContent     = post.eyebrow;
-      document.getElementById('post-title').textContent       = post.title;
-      document.getElementById('post-subtitle').textContent    = post.heroSubtitle;
+  // Try slug as-is first; if it looks like an old ?id= value that might not have
+  // a .md file, still attempt it — the 404 path will catch it.
+  fetch('posts/' + slug + '.md')
+    .then(function (r) {
+      if (!r.ok) throw new Error('not found');
+      return r.text();
+    })
+    .then(function (raw) {
+      var parsed = parseFrontMatter(raw);
+      var fm     = parsed.data;
+      var body   = parsed.content;
+
+      var title       = fm.title       || slug;
+      var dateDisplay = formatDate(fm.date);
+      var category    = fm.category    || 'News';
+      var eyebrow     = category + (dateDisplay ? ' · ' + dateDisplay : '');
+      var excerpt     = fm.excerpt     || '';
+      var readTime    = fm.readTime    || '2 min read';
+      var heroSub     = fm.heroSubtitle || '';
+      var ctaTitle    = fm.ctaTitle    || 'Book an Appointment';
+      var ctaBody     = fm.ctaBody     || 'Book a consultation with our Caterham team — we\'d love to see you.';
 
       // Meta
-      document.getElementById('post-date').textContent     = post.dateDisplay;
-      document.getElementById('post-readtime').textContent = post.readTime;
-      document.getElementById('post-category').textContent = post.category;
+      document.getElementById('meta-title').textContent = title + ' | Touché Hairdressing Caterham';
+      document.getElementById('meta-desc').content      = excerpt;
+      document.getElementById('meta-canonical').href    = 'https://www.touchehaircaterham.com/news/post.html?slug=' + slug;
+      document.getElementById('og-url').content         = 'https://www.touchehaircaterham.com/news/post.html?slug=' + slug;
+      document.getElementById('og-title').content       = title;
+      document.getElementById('og-desc').content        = excerpt;
 
-      // Body
-      document.getElementById('post-body').innerHTML = post.body;
+      // Hero
+      document.getElementById('breadcrumb-title').textContent = title.replace(/ —.*$/, '');
+      document.getElementById('post-eyebrow').textContent     = eyebrow;
+      document.getElementById('post-title').textContent       = title;
+      document.getElementById('post-subtitle').textContent    = heroSub;
+
+      // Meta bar
+      document.getElementById('post-date').textContent     = dateDisplay;
+      document.getElementById('post-readtime').textContent = readTime;
+      document.getElementById('post-category').textContent = category;
+
+      // Body — render Markdown to HTML
+      document.getElementById('post-body').innerHTML = marked.parse(body);
 
       // CTA
-      document.getElementById('cta-title').textContent = post.ctaTitle;
-      document.getElementById('cta-body').textContent  = post.ctaBody;
-      if (post.ctaLinkText) document.getElementById('cta-link').textContent = post.ctaLinkText;
+      document.getElementById('cta-title').textContent = ctaTitle;
+      document.getElementById('cta-body').textContent  = ctaBody;
 
       // Show article
       document.getElementById('post-article').style.display = '';
     })
-    .catch(() => showNotFound());
+    .catch(function () { showNotFound(); });
 
   function showNotFound() {
-    document.getElementById('post-article').style.display    = 'none';
-    document.getElementById('post-not-found').style.display  = '';
+    document.getElementById('post-article').style.display   = 'none';
+    document.getElementById('post-not-found').style.display = '';
   }
 }());
 </script>

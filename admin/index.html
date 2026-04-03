@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS — Touché Hairdressing</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    /* ── Setup notice (shown before CMS loads or when not configured) ── */
+    #setup-notice {
+      display: none;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f1410;
+      color: #e8eeea;
+      min-height: 100vh;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    #setup-notice.visible { display: block; }
+    .setup-box {
+      max-width: 640px;
+      margin: 3rem auto;
+      background: #182018;
+      border: 1px solid rgba(127,184,150,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+    .setup-box h1 { font-size: 1.3rem; color: #fff; margin: 0 0 0.25rem; }
+    .setup-box p  { color: #8aab96; font-size: 0.9rem; margin: 0.5rem 0 1.5rem; }
+    .setup-steps  { list-style: none; padding: 0; margin: 0; counter-reset: steps; }
+    .setup-steps li {
+      counter-increment: steps;
+      padding: 0.9rem 0.9rem 0.9rem 3rem;
+      position: relative;
+      border-bottom: 1px solid rgba(127,184,150,0.1);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .setup-steps li:last-child { border-bottom: none; }
+    .setup-steps li::before {
+      content: counter(steps);
+      position: absolute;
+      left: 0.75rem;
+      top: 0.9rem;
+      background: rgba(127,184,150,0.12);
+      color: #7fb896;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .setup-steps a { color: #7fb896; }
+    .setup-steps code {
+      background: rgba(127,184,150,0.1);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.82rem;
+    }
+
+    /* ── AI Draft panel ── */
+    #ai-panel-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 10000;
+      background: #7fb896;
+      color: #0f1410;
+      border: none;
+      border-radius: 50px;
+      padding: 0.65rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      font-family: system-ui, -apple-system, sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      transition: background 0.15s, transform 0.15s;
+    }
+    #ai-panel-toggle:hover { background: #a3cdb5; transform: translateY(-1px); }
+
+    #ai-panel {
+      position: fixed;
+      bottom: 5rem;
+      right: 1.5rem;
+      z-index: 10000;
+      width: 380px;
+      max-width: calc(100vw - 2rem);
+      background: #182018;
+      border: 1px solid rgba(127,184,150,0.25);
+      border-radius: 14px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #e8eeea;
+      font-size: 0.88rem;
+      display: none;
+    }
+    #ai-panel.open { display: flex; flex-direction: column; }
+    .ai-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem 0.75rem;
+      border-bottom: 1px solid rgba(127,184,150,0.12);
+    }
+    .ai-panel__header h2 { font-size: 0.95rem; font-weight: 700; margin: 0; }
+    .ai-panel__close {
+      background: none;
+      border: none;
+      color: #8aab96;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0.1rem 0.3rem;
+    }
+    .ai-panel__body { padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .ai-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8aab96;
+      margin-bottom: 0.3rem;
+    }
+    .ai-field input,
+    .ai-field textarea,
+    .ai-field select {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0f1410;
+      border: 1px solid rgba(127,184,150,0.2);
+      border-radius: 7px;
+      padding: 0.5rem 0.7rem;
+      color: #e8eeea;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+    }
+    .ai-field input:focus,
+    .ai-field textarea:focus,
+    .ai-field select:focus { border-color: #7fb896; }
+    .ai-field select option { background: #182018; }
+    .ai-field textarea { min-height: 70px; }
+
+    /* API key section */
+    #ai-key-section { display: none; }
+    #ai-key-section.visible { display: block; }
+    .key-row { display: flex; gap: 0.5rem; }
+    .key-row input { flex: 1; }
+    .btn-key {
+      background: rgba(127,184,150,0.12);
+      border: 1px solid rgba(127,184,150,0.3);
+      color: #7fb896;
+      border-radius: 7px;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-key:hover { background: rgba(127,184,150,0.2); }
+
+    .ai-panel__footer {
+      padding: 0 1.2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    #ai-generate-btn {
+      background: #7fb896;
+      color: #0f1410;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+    #ai-generate-btn:hover:not(:disabled) { background: #a3cdb5; }
+    #ai-generate-btn:disabled { opacity: 0.5; cursor: default; }
+
+    /* Result area */
+    #ai-result-section {
+      margin-top: 0.25rem;
+      display: none;
+    }
+    #ai-result-section.visible { display: block; }
+    #ai-result-section label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #8aab96; margin-bottom: 0.3rem; display: block; }
+    #ai-result-body {
+      background: #0f1410;
+      border: 1px solid rgba(127,184,150,0.2);
+      border-radius: 7px;
+      padding: 0.6rem 0.7rem;
+      font-size: 0.78rem;
+      font-family: 'Consolas', 'Monaco', monospace;
+      line-height: 1.5;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #a3cdb5;
+    }
+    #ai-result-excerpt {
+      background: #0f1410;
+      border: 1px solid rgba(127,184,150,0.2);
+      border-radius: 7px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #e8eeea;
+      margin-top: 0.5rem;
+    }
+    .copy-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+    .btn-copy {
+      background: rgba(127,184,150,0.1);
+      border: 1px solid rgba(127,184,150,0.2);
+      color: #7fb896;
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-copy:hover { background: rgba(127,184,150,0.2); }
+
+    #ai-status {
+      font-size: 0.78rem;
+      color: #8aab96;
+      min-height: 1em;
+      text-align: center;
+    }
+    #ai-status.error { color: #e57373; }
+    #ai-status.success { color: #7fb896; }
+  </style>
+</head>
+<body>
+
+<!-- Setup notice (visible when base_url not configured) -->
+<div id="setup-notice">
+  <div class="setup-box">
+    <h1>Decap CMS — One-Time Setup Required</h1>
+    <p>The CMS backend needs a Cloudflare Worker for GitHub OAuth. Follow these steps once, then update <code>admin/config.yml</code> with your Worker URL.</p>
+    <ol class="setup-steps">
+      <li>
+        <strong>Create a GitHub OAuth App</strong><br>
+        Go to <a href="https://github.com/settings/developers" target="_blank">github.com/settings/developers</a> → New OAuth App.<br>
+        Homepage URL: <code>https://www.touchehaircaterham.com</code><br>
+        Callback URL: <code>https://YOUR-WORKER.workers.dev/callback</code> (fill in after step 2).
+      </li>
+      <li>
+        <strong>Deploy the sveltia-cms-auth Cloudflare Worker</strong><br>
+        Follow the README at <a href="https://github.com/sveltia/sveltia-cms-auth" target="_blank">github.com/sveltia/sveltia-cms-auth</a>.<br>
+        Set environment variables: <code>GITHUB_CLIENT_ID</code>, <code>GITHUB_CLIENT_SECRET</code>, <code>ALLOWED_DOMAINS=touchehaircaterham.com</code>.
+      </li>
+      <li>
+        <strong>Update admin/config.yml</strong><br>
+        Replace <code>REPLACE-WITH-YOUR-WORKER-URL</code> with your deployed Worker URL (e.g. <code>https://touche-cms-auth.yourname.workers.dev</code>).
+      </li>
+      <li>
+        <strong>Push to GitHub</strong><br>
+        Commit and push <code>admin/config.yml</code>. Reload this page — the CMS login will appear.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- Decap CMS script — takes over the page body on load -->
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<!-- ── AI Draft Generator ─────────────────────────────────────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  // ── Brand context for Claude prompt ──
+  const BRAND_CONTEXT = `You are writing blog posts for Touché Hairdressing, a trusted independent hair salon in Caterham, Surrey, established in 1985.
+
+Voice & Tone — "Helen" persona:
+- Senior stylist, 52, 25+ years experience, deeply rooted in Caterham
+- Warm, assured, precise — never gushing or over-excited
+- Uses clear, confident language. Never says "OMG", "passionate about your journey", "revolutionary", or uses excessive exclamation marks
+- Writes like a real expert talking to a client: informed, direct, warm
+- Community-proud. Caterham is home, not just a location.
+
+Style rules:
+- Em dashes (—) for parenthetical phrases
+- Short, punchy sentences mixed with longer explanatory ones
+- Subheadings with ## that are descriptive, not clickbait
+- Never oversell. Let the expertise speak.
+- British English spelling (colour, emphasise, recognise, etc.)
+- No hashtags, no emojis in body text`;
+
+  // ── Storage helpers ──
+  function getKey() { return localStorage.getItem('touche_claude_api_key') || ''; }
+  function saveKey(k) { localStorage.setItem('touche_claude_api_key', k); }
+
+  // ── DOM elements ──
+  var toggle, panel, closeBtn, keySection, keyInput, saveKeyBtn, topicInput, toneSelect,
+      extraInput, generateBtn, status, resultSection, resultBody, resultExcerpt,
+      copyBodyBtn, copyExcerptBtn;
+
+  function buildPanel() {
+    // Toggle button
+    toggle = document.createElement('button');
+    toggle.id = 'ai-panel-toggle';
+    toggle.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> AI Draft';
+    toggle.addEventListener('click', function () {
+      panel.classList.toggle('open');
+    });
+
+    // Panel
+    panel = document.createElement('div');
+    panel.id = 'ai-panel';
+    panel.innerHTML = `
+      <div class="ai-panel__header">
+        <h2>✦ AI Draft Generator</h2>
+        <button class="ai-panel__close" id="ai-close-btn" title="Close">✕</button>
+      </div>
+      <div class="ai-panel__body">
+        <div class="ai-field" id="ai-key-section">
+          <label>Claude API Key</label>
+          <div class="key-row">
+            <input type="password" id="ai-key-input" placeholder="sk-ant-…">
+            <button class="btn-key" id="ai-save-key-btn">Save</button>
+          </div>
+          <p style="font-size:0.75rem;color:#8aab96;margin:0.3rem 0 0;">Stored in browser only. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:#7fb896;">console.anthropic.com</a>.</p>
+        </div>
+        <div class="ai-field">
+          <label>Topic / Headline Idea</label>
+          <input type="text" id="ai-topic-input" placeholder="e.g. Spring 2026 colour trends — warm tones and coppers">
+        </div>
+        <div class="ai-field">
+          <label>Tone</label>
+          <select id="ai-tone-select">
+            <option value="informative">Informative — industry insight, educational</option>
+            <option value="warm">Warm — community focus, personal touch</option>
+            <option value="product">Product — introduce a brand or treatment</option>
+            <option value="seasonal">Seasonal — trend-led, timely</option>
+          </select>
+        </div>
+        <div class="ai-field">
+          <label>Extra context (optional)</label>
+          <textarea id="ai-extra-input" placeholder="e.g. Mention balayage and curtain bangs. Focus on low-maintenance styles."></textarea>
+        </div>
+        <div id="ai-result-section">
+          <label>Generated Excerpt</label>
+          <div id="ai-result-excerpt"></div>
+          <div class="copy-row">
+            <button class="btn-copy" id="ai-copy-excerpt-btn">Copy excerpt</button>
+          </div>
+          <label style="margin-top:0.75rem;">Generated Body (Markdown)</label>
+          <div id="ai-result-body"></div>
+          <div class="copy-row">
+            <button class="btn-copy" id="ai-copy-body-btn">Copy body</button>
+          </div>
+        </div>
+      </div>
+      <div class="ai-panel__footer">
+        <p id="ai-status"></p>
+        <button id="ai-generate-btn">Generate Draft</button>
+      </div>`;
+
+    document.body.appendChild(toggle);
+    document.body.appendChild(panel);
+
+    // Wire up elements
+    closeBtn       = document.getElementById('ai-close-btn');
+    keySection     = document.getElementById('ai-key-section');
+    keyInput       = document.getElementById('ai-key-input');
+    saveKeyBtn     = document.getElementById('ai-save-key-btn');
+    topicInput     = document.getElementById('ai-topic-input');
+    toneSelect     = document.getElementById('ai-tone-select');
+    extraInput     = document.getElementById('ai-extra-input');
+    generateBtn    = document.getElementById('ai-generate-btn');
+    status         = document.getElementById('ai-status');
+    resultSection  = document.getElementById('ai-result-section');
+    resultBody     = document.getElementById('ai-result-body');
+    resultExcerpt  = document.getElementById('ai-result-excerpt');
+    copyBodyBtn    = document.getElementById('ai-copy-body-btn');
+    copyExcerptBtn = document.getElementById('ai-copy-excerpt-btn');
+
+    // Show/hide API key section
+    if (!getKey()) {
+      keySection.classList.add('visible');
+    } else {
+      keyInput.value = '••••••••••••••••';
+    }
+
+    closeBtn.addEventListener('click', function () { panel.classList.remove('open'); });
+
+    saveKeyBtn.addEventListener('click', function () {
+      var k = keyInput.value.trim();
+      if (!k || k.startsWith('•')) return;
+      saveKey(k);
+      keySection.classList.remove('visible');
+      keyInput.value = '••••••••••••••••';
+      setStatus('API key saved.', 'success');
+    });
+
+    // Allow re-entering key by clicking on masked input
+    keyInput.addEventListener('focus', function () {
+      if (keyInput.value.startsWith('•')) {
+        keyInput.value = '';
+        keySection.classList.add('visible');
+      }
+    });
+
+    copyBodyBtn.addEventListener('click', function () {
+      navigator.clipboard.writeText(resultBody.textContent).then(function () {
+        setStatus('Body copied to clipboard — paste into the Body field in the editor above.', 'success');
+      });
+    });
+
+    copyExcerptBtn.addEventListener('click', function () {
+      navigator.clipboard.writeText(resultExcerpt.textContent).then(function () {
+        setStatus('Excerpt copied.', 'success');
+      });
+    });
+
+    generateBtn.addEventListener('click', generate);
+  }
+
+  function setStatus(msg, type) {
+    status.textContent = msg;
+    status.className = type || '';
+  }
+
+  function generate() {
+    var apiKey = getKey();
+    if (!apiKey) {
+      keySection.classList.add('visible');
+      setStatus('Please save your Claude API key first.', 'error');
+      return;
+    }
+    var topic = topicInput.value.trim();
+    if (!topic) {
+      setStatus('Please enter a topic.', 'error');
+      topicInput.focus();
+      return;
+    }
+
+    var tone = toneSelect.value;
+    var extra = extraInput.value.trim();
+
+    var toneGuide = {
+      informative: 'Informative and educational. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.',
+      warm:        'Warm and community-focused. Dial: Warmth 4/5, Authority 3/5, Formality 2/5.',
+      product:     'Product introduction — informed enthusiasm, not hype. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.',
+      seasonal:    'Seasonal/trend-led — expert insight on what\'s happening now. Dial: Warmth 3/5, Authority 4/5, Formality 3/5.'
+    };
+
+    var userPrompt = 'Write a blog post for the Touché Hairdressing website.\n\n'
+      + 'Topic: ' + topic + '\n'
+      + 'Tone: ' + toneGuide[tone] + '\n'
+      + (extra ? 'Additional context: ' + extra + '\n' : '')
+      + '\nOutput format — respond with ONLY this structure, no extra text:\n'
+      + 'EXCERPT: [one or two sentence summary, ~160 characters, no quotes]\n'
+      + 'BODY:\n[full article body in Markdown, starting with an introductory paragraph, then ## subheadings, 300–500 words]';
+
+    generateBtn.disabled = true;
+    resultSection.classList.remove('visible');
+    setStatus('Generating — this takes about 10 seconds…');
+
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-request-allowed': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        system: BRAND_CONTEXT,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    })
+    .then(function (r) {
+      if (!r.ok) return r.json().then(function (e) { throw new Error(e.error && e.error.message || 'API error ' + r.status); });
+      return r.json();
+    })
+    .then(function (data) {
+      var text = data.content && data.content[0] && data.content[0].text || '';
+      var excerptMatch = text.match(/EXCERPT:\s*(.+?)(?:\n|$)/);
+      var bodyMatch    = text.match(/BODY:\s*\n([\s\S]+)/);
+      var excerpt = excerptMatch ? excerptMatch[1].trim() : '';
+      var body    = bodyMatch    ? bodyMatch[1].trim()    : text;
+
+      resultExcerpt.textContent = excerpt || '(No excerpt generated — copy the body and write your own)';
+      resultBody.textContent    = body;
+      resultSection.classList.add('visible');
+      setStatus('Draft ready — copy the fields below and paste them into the editor above.', 'success');
+    })
+    .catch(function (err) {
+      setStatus('Error: ' + err.message, 'error');
+    })
+    .finally(function () {
+      generateBtn.disabled = false;
+    });
+  }
+
+  // ── Check config and initialise ──
+  function checkConfig() {
+    fetch('config.yml')
+      .then(function (r) { return r.text(); })
+      .then(function (yml) {
+        if (yml.includes('REPLACE-WITH-YOUR-WORKER-URL')) {
+          document.getElementById('setup-notice').classList.add('visible');
+        }
+      })
+      .catch(function () {});
+  }
+
+  // Wait for CMS to initialise before adding the panel
+  if (typeof window.CMS !== 'undefined') {
+    buildPanel();
+    checkConfig();
+  } else {
+    window.addEventListener('load', function () {
+      // Small delay to let Decap CMS render
+      setTimeout(function () {
+        buildPanel();
+        checkConfig();
+      }, 500);
+    });
+  }
+}());
+</script>
+</body>
+</html>

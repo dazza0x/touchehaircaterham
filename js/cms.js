@@ -1,20 +1,17 @@
 /**
  * cms.js — Dynamic content renderer for Touché Hairdressing
- * Loads admin-data.json and populates hours, services and news grids.
- * Fails silently if JSON is unavailable (static fallback remains).
+ * Hours/services/Instagram: loads from admin-data.json
+ * Blog posts: loads from posts-index.json (built by GitHub Actions from news/posts/*.md)
+ * Fails silently if either JSON is unavailable (static fallback remains).
  */
 (function () {
   'use strict';
 
-  // Resolve correct path to admin-data.json from any page depth
-  function dataPath() {
-    const depth = window.location.pathname.split('/').filter(Boolean).length;
-    // On GitHub Pages the repo name counts as one segment; subtract 1
-    // We detect by checking if we're under a /news/ sub-path
-    return location.pathname.includes('/news/') ? '../admin-data.json' : 'admin-data.json';
-  }
+  const inNews = location.pathname.includes('/news/');
 
-  function pad(s) { return String(s).padStart(2, '0'); }
+  // Path helpers
+  function adminDataPath()  { return inNews ? '../admin-data.json'  : 'admin-data.json';  }
+  function postsIndexPath() { return inNews ? '../posts-index.json' : 'posts-index.json'; }
 
   // ── Hours ─────────────────────────────────────────────────────────────────
   function renderHours(hours, container) {
@@ -55,15 +52,16 @@
     const sorted = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
     const shown  = limit ? sorted.slice(0, limit) : sorted;
     const arrow  = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M7 2l5 5-5 5"/></svg>`;
-    const prefix = location.pathname.includes('/news/') ? '' : 'news/';
+    const prefix = inNews ? '' : 'news/';
 
     const cards = shown.map(p => {
-      const href = p.staticPage
-        ? `${prefix}${p.staticPage}`
-        : `${prefix}post.html?id=${p.id}`;
-      const catSlug = p.category.toLowerCase().replace(/\s+/g, '-');
-      const imgEl = p.image
-        ? `<div class="blog-card__img"><img src="${p.image.startsWith('Images/') ? prefix.replace('news/','') + p.image : p.image}" alt="${p.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>`
+      const href = `${prefix}post.html?slug=${p.slug}`;
+      const catSlug = (p.category || 'news').toLowerCase().replace(/\s+/g, '-');
+      const imgSrc = p.image
+        ? (p.image.startsWith('/') ? p.image : (inNews ? '../' : '') + p.image)
+        : null;
+      const imgEl = imgSrc
+        ? `<div class="blog-card__img"><img src="${imgSrc}" alt="${p.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>`
         : `<div class="blog-card__img blog-card__img--${catSlug}" aria-hidden="true"></div>`;
       return `
         <article class="blog-card">
@@ -83,36 +81,35 @@
   function renderFooterArticles(posts, containers) {
     if (!containers.length) return;
     const sorted = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
-    const prefix = location.pathname.includes('/news/') ? '' : 'news/';
+    const prefix = inNews ? '' : 'news/';
     const items = sorted.map(p => {
-      const href = p.staticPage ? `${prefix}${p.staticPage}` : `${prefix}post.html?id=${p.id}`;
+      const href = `${prefix}post.html?slug=${p.slug}`;
       return `<li><a href="${href}">${p.title.replace(/ —.*$/, '')}</a></li>`;
     }).join('');
     containers.forEach(c => { c.innerHTML = items; });
   }
 
-  // ── Boot ──────────────────────────────────────────────────────────────────
-  fetch(dataPath())
+  // ── Load hours/services from admin-data.json ──────────────────────────────
+  fetch(adminDataPath())
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(data => {
-      // Hours tables
-      const hoursBodies = document.querySelectorAll('[data-cms="hours"]');
-      hoursBodies.forEach(el => renderHours(data.hours, el));
-
-      // Services pricing
+      document.querySelectorAll('[data-cms="hours"]').forEach(el => renderHours(data.hours, el));
       const servicesEl = document.getElementById('cms-services');
       if (servicesEl) renderServices(data.services, servicesEl);
+    })
+    .catch(() => {});
 
-      // News grid (homepage shows 3, news index shows all)
+  // ── Load posts from posts-index.json ─────────────────────────────────────
+  fetch(postsIndexPath())
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(posts => {
       const newsGrid = document.getElementById('cms-news-grid');
       if (newsGrid) {
         const limit = newsGrid.dataset.limit ? parseInt(newsGrid.dataset.limit) : null;
-        renderNews(data.posts, newsGrid, limit);
+        renderNews(posts, newsGrid, limit);
       }
-
-      // Footer article links
       const footerLists = document.querySelectorAll('[data-cms="footer-articles"] ul');
-      renderFooterArticles(data.posts, [...footerLists]);
+      renderFooterArticles(posts, [...footerLists]);
     })
-    .catch(() => { /* static fallback remains */ });
+    .catch(() => {});
 }());

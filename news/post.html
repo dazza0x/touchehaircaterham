@@ -173,14 +173,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   if (!slug) { showNotFound(); return; }
 
-  // ── Minimal front-matter parser (no dependencies) ──
+  // ── Minimal front-matter parser (handles multi-line YAML values) ──
   function parseFrontMatter(text) {
     var match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
     if (!match) return { data: {}, content: text };
     var data = {};
+    var lastKey = null;
     match[1].split(/\r?\n/).forEach(function (line) {
-      var m = line.match(/^(\w+):\s*"?(.+?)"?\s*$/);
-      if (m) data[m[1]] = m[2];
+      // Continuation line (starts with whitespace) — append to last key
+      if (/^\s+\S/.test(line) && lastKey) {
+        data[lastKey] = (data[lastKey] + ' ' + line.trim()).trim();
+        return;
+      }
+      var m = line.match(/^([\w]+):\s*(.*?)\s*$/);
+      if (!m) return;
+      lastKey = m[1];
+      // Strip surrounding quotes if present
+      var val = m[2].replace(/^["']|["']$/g, '');
+      data[lastKey] = val;
     });
     return { data: data, content: match[2] };
   }

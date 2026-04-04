@@ -106,3 +106,9 @@ collections:
         widget: "text"
         required: false
         hint: "Supporting text under the CTA heading."
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: true
+        hint: "Toggle off when you're ready to publish this post."

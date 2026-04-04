@@ -18,6 +18,8 @@ const posts = files.map(file => {
   const slug    = file.replace(/\.md$/, '');
   const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
   const { data } = matter(content);
+  return { slug, data };
+}).filter(({ data }) => data.draft !== true).map(({ slug, data }) => {
 
   // Format display date e.g. "11 October 2025"
   // Decap CMS may save dates as "2026-04-03T00:00:00.000Z" or plain "2026-04-03"

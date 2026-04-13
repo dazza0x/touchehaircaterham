@@ -187,24 +187,15 @@ p:last-child { margin-bottom: 0; }
 }
 
 .nav__logo {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-style: italic;
-  color: var(--gold);
-  letter-spacing: 0.02em;
   flex-shrink: 0;
   margin-right: auto;
+  display: flex;
+  align-items: center;
 }
-.nav__logo span {
-  font-style: normal;
-  font-weight: 300;
-  color: rgba(255,255,255,0.50);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+.nav__logo-img {
+  height: 42px;
+  width: auto;
   display: block;
-  margin-top: -4px;
 }
 
 .nav__links {
@@ -1371,9 +1362,11 @@ p:last-child { margin-bottom: 0; }
 }
 
 .footer__brand .nav__logo {
-  font-size: 1.6rem;
   margin-bottom: 1rem;
   display: block;
+}
+.footer__brand .nav__logo-img {
+  height: 50px;
 }
 
 .footer__brand p {

@@ -1745,10 +1745,8 @@ p:last-child { margin-bottom: 0; }
   :root { --nav-height: 66px; }
 
   /* Per-slide focal point fixes for mobile crop */
-  .carousel-slide:nth-child(1) { object-position: 40% center; } /* two women – keep both in frame */
-  .carousel-slide:nth-child(2) { object-position: 32% center; } /* Botanist – face left of centre */
-  .carousel-slide:nth-child(5) { object-position: 22% center; } /* pink hair – face far left */
-  .carousel-slide:nth-child(6) { object-position: 30% center; } /* teal hair – face left of centre */
+  .carousel-slide:nth-child(5) { object-position: 70% center; } /* pink hair – face right of centre */
+  .carousel-slide:nth-child(6) { object-position: 65% center; } /* teal hair – face right of centre */
 
   .nav__links,
   .nav__cta { display: none; }

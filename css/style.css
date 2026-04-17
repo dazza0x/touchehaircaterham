@@ -51,6 +51,22 @@ body {
   background: var(--cream);
   line-height: 1.7;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle grain texture — adds warmth & tactile depth to the flat cream background.
+   SVG fractal noise tiled across viewport, low opacity, fixed so it doesn't
+   scroll with content (reads like paper grain rather than moving pattern). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0 0.07  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
 }
 
 img {
@@ -290,13 +306,43 @@ p:last-child { margin-bottom: 0; }
   object-fit: cover;
   object-position: center;
   opacity: 0;
+  transform: scale(1.02);
   transition: opacity 1.2s ease;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
+/* Ken Burns — subtle slow zoom/drift only on the active slide.
+   Alternating slides drift in opposite directions for rhythm.
+   Animation restarts each time the slide becomes active. */
 .carousel-slide.active {
   opacity: 1;
   z-index: 2;
+  animation: kenBurnsIn 9s ease-out forwards;
+}
+
+.carousel-slide:nth-child(even).active {
+  animation-name: kenBurnsOut;
+}
+
+@keyframes kenBurnsIn {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.10) translate3d(-1.5%, -0.8%, 0); }
+}
+
+@keyframes kenBurnsOut {
+  from { transform: scale(1.10) translate3d(-1%, 0.5%, 0); }
+  to   { transform: scale(1.02) translate3d(1%, -0.3%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-slide,
+  .carousel-slide.active,
+  .carousel-slide:nth-child(even).active {
+    animation: none;
+    transform: none;
+    transition: opacity .4s linear;
+  }
 }
 
 .hero-overlay {
@@ -871,6 +917,77 @@ p:last-child { margin-bottom: 0; }
 }
 
 .product-card__link:hover { gap: 0.7rem; }
+
+/* ===== SERVICE CATEGORY CARDS (replaces emoji category tiles) ===== */
+/* Editorial Roman-numeral treatment — reads as "Chapter I / II / III".
+   Nods to the 1985 heritage & serif typography of the brand. */
+.service-cat-card { display: block; }
+
+.service-cat {
+  text-align: center;
+  padding: 2.6rem 1.5rem 2.2rem;
+  transition: all var(--transition);
+}
+
+.service-cat__numeral {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--gold);
+  letter-spacing: .04em;
+  margin-bottom: 1rem;
+  transition: color var(--transition), transform var(--transition);
+}
+
+.service-cat__rule {
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 1.1rem;
+  opacity: .55;
+  transition: width var(--transition), opacity var(--transition);
+}
+
+.service-cat__name {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.service-cat__meta {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--text-light);
+  letter-spacing: .02em;
+}
+
+.service-cat-card:hover .service-cat__numeral { color: var(--gold-dark); transform: translateY(-2px); }
+.service-cat-card:hover .service-cat__rule    { width: 52px; opacity: 1; }
+
+/* ===== SECTION DIVIDER — thin gold rule with centred diamond ornament ===== */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  opacity: .9;
+}
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 0 1 min(160px, 18vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 35%, var(--gold) 65%, transparent);
+}
+.section-divider__mark {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex: none;
+}
 
 /* ===== PRICING TABLE ===== */
 .pricing-section {

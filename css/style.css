@@ -601,13 +601,14 @@ p:last-child { margin-bottom: 0; }
   margin: 0;
 }
 
-/* ===== SERVICES MASTHEAD =====
-   Editorial dark header that replaces the old photographic banner. Carries
-   the "three chapters" editorial conceit into an integrated table of
-   contents, so visitors see at a glance what the page holds. Layered
-   background atmospherics (diagonal gold pinstripes + radial glow + a
-   giant italic "&" watermark) give the flat ground depth without a photo. */
-.services-masthead {
+/* ===== PAGE MASTHEAD =====
+   Editorial dark header used across inner pages (services, about). Replaces
+   the old photographic banner with a type-led composition: diagonal gold
+   pinstripes + radial glow + fine noise + a giant italic watermark (content
+   varies per page — "&" on services, "40" on about). The base styles are
+   shared; page-specific tone is carried by the watermark and by optional
+   children like a table-of-contents chapter grid. */
+.page-masthead {
   position: relative;
   background: var(--black);
   padding: calc(var(--nav-height) + 5rem) 2rem 4.5rem;
@@ -616,7 +617,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* Layer 1 — atmospheric gold pinstripes (8deg for movement) + radial glow */
-.services-masthead::before {
+.page-masthead::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -634,7 +635,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* Layer 2 — subtle fine-grain noise to prevent banding on the gradient */
-.services-masthead::after {
+.page-masthead::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -645,8 +646,9 @@ p:last-child { margin-bottom: 0; }
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.73 0 0 0 0 0.66 0 0 0 0 0.59 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Giant italic "&" watermark — purely decorative, carried from the H1 accent */
-.services-masthead__watermark {
+/* Giant italic watermark — purely decorative, carried from the H1 accent.
+   Default placement: bottom-right, single glyph (used by services "&"). */
+.page-masthead__watermark {
   position: absolute;
   right: -2vw;
   bottom: -8vw;
@@ -663,26 +665,38 @@ p:last-child { margin-bottom: 0; }
   user-select: none;
 }
 
-.services-masthead__inner {
+/* Numeric variant — two-digit glyphs need more horizontal room and sit
+   better bleeding off the LEFT edge so they don't fight the centered H1.
+   Slightly lower opacity because wider coverage = more visual weight. */
+.page-masthead__watermark--numeric {
+  right: auto;
+  left: -4vw;
+  bottom: -6vw;
+  font-size: clamp(14rem, 30vw, 26rem);
+  letter-spacing: -0.06em;
+  opacity: 0.045;
+}
+
+.page-masthead__inner {
   position: relative;
   z-index: 1;
   max-width: 1100px;
   margin: 0 auto;
 }
 
-.services-masthead__content {
+.page-masthead__content {
   text-align: center;
   max-width: 720px;
   margin: 2rem auto 0;
 }
 
-.services-masthead .eyebrow {
+.page-masthead .eyebrow {
   color: var(--gold);
   margin-bottom: 1.2rem;
   opacity: 0.9;
 }
 
-.services-masthead__title {
+.page-masthead__title {
   font-family: var(--font-serif);
   font-size: clamp(2.8rem, 7vw, 5.4rem);
   font-weight: 400;
@@ -692,12 +706,12 @@ p:last-child { margin-bottom: 0; }
   letter-spacing: -0.015em;
 }
 
-.services-masthead__title em {
+.page-masthead__title em {
   font-style: italic;
   color: var(--gold);
 }
 
-.services-masthead__rule {
+.page-masthead__rule {
   display: block;
   width: 48px;
   height: 1px;
@@ -706,7 +720,7 @@ p:last-child { margin-bottom: 0; }
   opacity: 0.7;
 }
 
-.services-masthead__lead {
+.page-masthead__lead {
   font-size: 1.05rem;
   line-height: 1.75;
   font-weight: 300;
@@ -716,7 +730,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* Table-of-contents chapter links (three-up grid) */
-.services-masthead__contents {
+.page-masthead__contents {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
@@ -793,10 +807,10 @@ p:last-child { margin-bottom: 0; }
 }
 
 @media (max-width: 720px) {
-  .services-masthead {
+  .page-masthead {
     padding: calc(var(--nav-height) + 3rem) 1.5rem 3rem;
   }
-  .services-masthead__contents {
+  .page-masthead__contents {
     grid-template-columns: 1fr;
     margin-top: 3rem;
   }
@@ -3051,6 +3065,91 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* ===== TIMELINE ===== */
+/* ===== STICKY TIMELINE LAYOUT =====
+   On desktop, the section heading (aside) pins to the viewport while the
+   timeline entries scroll past. The sticky releases when the layout's
+   bottom edge reaches the sticky's top — so once the last entry has
+   scrolled into view, the heading disappears with it and the page moves
+   on to the next section. Below 980px the layout stacks and the sticky
+   behaviour is disabled (fine on phones — less screen real estate to spare). */
+.timeline-layout { display: block; }
+
+/* Mobile: centred heading block (desktop overrides below). */
+.timeline-layout__heading {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 3rem;
+}
+
+.timeline-layout__heading h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 0 0;
+}
+
+.timeline-layout__heading h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.timeline-layout__heading .eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.timeline-layout__rule {
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 1.4rem auto;
+}
+
+.timeline-layout__heading p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-light);
+  margin: 0 auto;
+  max-width: 42ch;
+}
+
+@media (min-width: 980px) {
+  .timeline-section .container { max-width: 1200px; }
+
+  .timeline-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .timeline-layout__aside {
+    /* The inner heading does the sticking — the aside just holds the
+       column's grid slot. */
+  }
+
+  .timeline-layout__heading {
+    position: sticky;
+    top: calc(var(--nav-height) + 2.5rem);
+    padding-top: 0.5rem;
+    text-align: left;
+    max-width: none;
+    margin: 0;
+  }
+
+  .timeline-layout__heading .timeline-layout__rule { margin: 1.4rem 0; }
+  .timeline-layout__heading p { margin: 0; }
+
+  /* Right column: let the timeline's own centering yield to the grid slot. */
+  .timeline-layout .timeline {
+    max-width: none;
+    margin: 0;
+  }
+}
+
 .timeline {
   position: relative;
   max-width: 860px;

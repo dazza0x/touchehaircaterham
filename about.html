@@ -61,15 +61,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="tel:01883340771" class="btn btn--gold">Call 01883 340771</a>
 </nav>
 
-<!-- ===== PAGE HERO ===== -->
-<header class="page-hero page-hero--img" style="background-image:url('Images/about%20us%20header%201200%20x%20400.jpg')">
-  <div class="breadcrumb">
-    <a href="index.html">Home</a><span>›</span> About
-  </div>
-  <div class="page-hero__content">
-    <span class="eyebrow" style="color:var(--gold);">Our Story</span>
-    <h1>We Didn't Come This Far to Stop Now</h1>
-    <p>Four decades of passion, craft and community — right in the heart of Caterham.</p>
+<!-- ===== ABOUT MASTHEAD =====
+     Editorial type-led header — no banner photograph. A giant italic "40"
+     watermark carries the brand's anchoring number into the composition,
+     echoing the homepage heritage panel. -->
+<header class="page-masthead page-masthead--about" aria-labelledby="about-hero-heading">
+  <span class="page-masthead__watermark page-masthead__watermark--numeric" aria-hidden="true">40</span>
+
+  <div class="page-masthead__inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span> About</div>
+
+    <div class="page-masthead__content" data-reveal>
+      <span class="eyebrow">Our Story</span>
+      <h1 id="about-hero-heading" class="page-masthead__title">We didn&rsquo;t come this far <em>to stop now.</em></h1>
+      <span class="page-masthead__rule" aria-hidden="true"></span>
+      <p class="page-masthead__lead">Four decades of passion, craft and community &mdash; right in the heart of Caterham.</p>
+    </div>
   </div>
 </header>
 
@@ -118,17 +125,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- ===== TIMELINE ===== -->
-<section class="section section--cream" aria-labelledby="timeline-heading">
+<!-- ===== TIMELINE =====
+     Two-column layout on desktop: the heading sticks to the viewport on
+     the left while the timeline entries scroll past on the right. Once the
+     last entry scrolls out, the section releases naturally. Below 980px
+     the layout stacks and the sticky is disabled. -->
+<section class="section section--cream timeline-section" aria-labelledby="timeline-heading">
   <div class="container">
-    <div class="section__header">
-      <span class="eyebrow">40 Years of Style</span>
-      <h2 id="timeline-heading">Four Decades of Hair</h2>
-      <div class="divider"></div>
-      <p>From crimped hair and power perms to the Butterfly Cut — we've been there through every era.</p>
-    </div>
+    <div class="timeline-layout">
+      <div class="timeline-layout__aside">
+        <div class="timeline-layout__heading">
+          <span class="eyebrow" data-reveal>40 Years of Style</span>
+          <h2 id="timeline-heading" data-reveal>Four decades <em>of hair.</em></h2>
+          <span class="timeline-layout__rule" aria-hidden="true"></span>
+          <p data-reveal>From crimped hair and power perms to the Butterfly Cut &mdash; we&rsquo;ve been there through every era.</p>
+        </div>
+      </div>
 
-    <div class="timeline">
+      <div class="timeline">
 
       <div class="timeline__item">
         <div class="timeline__meta"><span class="timeline__year">1985</span></div>
@@ -202,7 +216,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
 
-    </div>
+      </div><!-- /.timeline -->
+    </div><!-- /.timeline-layout -->
   </div>
 </section>
 

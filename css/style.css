@@ -2776,7 +2776,7 @@ p:last-child { margin-bottom: 0; }
 
   .btn { padding: 0.8rem 1.6rem; }
 
-  .cta-band { padding: 4rem 1.5rem; }
+  .closing-band { padding: 4rem 1.5rem; }
 
   .instagram-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
 }

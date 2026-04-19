@@ -1021,6 +1021,13 @@ p:last-child { margin-bottom: 0; }
   transform: scale(1.06);
 }
 
+/* Per-chapter focal-point overrides — prevents object-fit: cover
+   from clipping faces/heads when the subject isn't vertically centred.
+   Adjust these as new imagery lands. */
+#smoothing .service-chapter__img { object-position: center 22%; }
+/* #cutting  .service-chapter__img { object-position: center 30%; } */
+/* #colouring .service-chapter__img { object-position: center 40%; } */
+
 /* Directional scrim — denser on the caption side, fading across
    to let the image breathe on the opposite edge. */
 .service-chapter__scrim {

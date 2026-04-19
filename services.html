@@ -91,51 +91,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="tel:01883340771" class="btn btn--gold">Call 01883 340771</a>
 </nav>
 
-<!-- ===== PAGE HERO ===== -->
-<header class="page-hero page-hero--img" style="background-image:url('Images/services%20header%201200%20x%20400.jpg')">
-  <div class="breadcrumb"><a href="index.html">Home</a><span>›</span> Services</div>
-  <div class="page-hero__content">
-    <span class="eyebrow" style="color:var(--gold);">What We Offer</span>
-    <h1>Services &amp; Prices</h1>
-    <p>Expert hairdressing for ladies and gents — all prices include VAT, shampoo &amp; a complimentary refreshment.</p>
+<!-- ===== SERVICES MASTHEAD =====
+     Editorial header — no photography. The three chapter photographs below
+     carry the visual weight; this header sets the voice and acts as a
+     table of contents so visitors can jump straight into a category. -->
+<header class="services-masthead" aria-labelledby="services-hero-heading">
+  <span class="services-masthead__watermark" aria-hidden="true">&amp;</span>
+
+  <div class="services-masthead__inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span> Services</div>
+
+    <div class="services-masthead__content" data-reveal>
+      <span class="eyebrow">What We Offer</span>
+      <h1 id="services-hero-heading" class="services-masthead__title">Services <em>&amp; Prices</em></h1>
+      <span class="services-masthead__rule" aria-hidden="true"></span>
+      <p class="services-masthead__lead">Expert hairdressing for ladies and gents &mdash; all prices include VAT, shampoo &amp; a complimentary refreshment.</p>
+    </div>
+
+    <nav class="services-masthead__contents" aria-label="Page contents" data-reveal-stagger>
+      <a href="#cutting" class="chapter-link">
+        <span class="chapter-link__num">I</span>
+        <span class="chapter-link__rule" aria-hidden="true"></span>
+        <span class="chapter-link__title">Cutting <em>&amp; Styling</em></span>
+      </a>
+      <a href="#colouring" class="chapter-link">
+        <span class="chapter-link__num">II</span>
+        <span class="chapter-link__rule" aria-hidden="true"></span>
+        <span class="chapter-link__title">Colour <em>&amp; Light</em></span>
+      </a>
+      <a href="#smoothing" class="chapter-link">
+        <span class="chapter-link__num">III</span>
+        <span class="chapter-link__rule" aria-hidden="true"></span>
+        <span class="chapter-link__title">Smooth <em>&amp; Finished</em></span>
+      </a>
+    </nav>
   </div>
 </header>
-
-<!-- ===== SERVICE INTRO ICONS ===== -->
-<section class="section section--cream" aria-label="Service categories">
-  <div class="container">
-    <div class="grid-3" style="gap:1.5rem;">
-
-      <a href="#cutting" class="service-cat-card" style="text-decoration:none;">
-        <div class="product-card service-cat">
-          <div class="service-cat__numeral">I</div>
-          <div class="service-cat__rule"></div>
-          <div class="product-card__name service-cat__name">Cutting &amp; Styling</div>
-          <p class="service-cat__meta">See full price list below</p>
-        </div>
-      </a>
-
-      <a href="#colouring" class="service-cat-card" style="text-decoration:none;">
-        <div class="product-card service-cat">
-          <div class="service-cat__numeral">II</div>
-          <div class="service-cat__rule"></div>
-          <div class="product-card__name service-cat__name">Colour &amp; Highlights</div>
-          <p class="service-cat__meta">See full price list below</p>
-        </div>
-      </a>
-
-      <a href="#smoothing" class="service-cat-card" style="text-decoration:none;">
-        <div class="product-card service-cat">
-          <div class="service-cat__numeral">III</div>
-          <div class="service-cat__rule"></div>
-          <div class="product-card__name service-cat__name">Smoothing &amp; More</div>
-          <p class="service-cat__meta">See full price list below</p>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
 
 <!-- ===== PRICING TABLE ===== -->
 <section class="pricing-section">

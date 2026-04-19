@@ -601,6 +601,224 @@ p:last-child { margin-bottom: 0; }
   margin: 0;
 }
 
+/* ===== SERVICES MASTHEAD =====
+   Editorial dark header that replaces the old photographic banner. Carries
+   the "three chapters" editorial conceit into an integrated table of
+   contents, so visitors see at a glance what the page holds. Layered
+   background atmospherics (diagonal gold pinstripes + radial glow + a
+   giant italic "&" watermark) give the flat ground depth without a photo. */
+.services-masthead {
+  position: relative;
+  background: var(--black);
+  padding: calc(var(--nav-height) + 5rem) 2rem 4.5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Layer 1 — atmospheric gold pinstripes (8deg for movement) + radial glow */
+.services-masthead::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      8deg,
+      transparent 0,
+      transparent 70px,
+      rgba(187,169,150,0.04) 70px,
+      rgba(187,169,150,0.04) 71px
+    ),
+    radial-gradient(ellipse 70% 60% at 50% 120%, rgba(187,169,150,0.14), transparent 60%),
+    linear-gradient(180deg, #100d0a 0%, #1a1714 100%);
+  z-index: 0;
+}
+
+/* Layer 2 — subtle fine-grain noise to prevent banding on the gradient */
+.services-masthead::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.73 0 0 0 0 0.66 0 0 0 0 0.59 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Giant italic "&" watermark — purely decorative, carried from the H1 accent */
+.services-masthead__watermark {
+  position: absolute;
+  right: -2vw;
+  bottom: -8vw;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(18rem, 38vw, 34rem);
+  line-height: 0.8;
+  color: var(--gold);
+  opacity: 0.055;
+  z-index: 0;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+
+.services-masthead__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.services-masthead__content {
+  text-align: center;
+  max-width: 720px;
+  margin: 2rem auto 0;
+}
+
+.services-masthead .eyebrow {
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+  opacity: 0.9;
+}
+
+.services-masthead__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 7vw, 5.4rem);
+  font-weight: 400;
+  line-height: 1.02;
+  color: var(--warm-white);
+  margin: 0 0 1.4rem;
+  letter-spacing: -0.015em;
+}
+
+.services-masthead__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.services-masthead__rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 1.6rem;
+  opacity: 0.7;
+}
+
+.services-masthead__lead {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  margin: 0 auto;
+  max-width: 520px;
+}
+
+/* Table-of-contents chapter links (three-up grid) */
+.services-masthead__contents {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 4rem auto 0;
+  max-width: 900px;
+  border-top: 1px solid rgba(187,169,150,0.18);
+  border-bottom: 1px solid rgba(187,169,150,0.18);
+}
+
+.chapter-link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.8rem 1rem;
+  text-decoration: none;
+  color: var(--warm-white);
+  border-right: 1px solid rgba(187,169,150,0.18);
+  transition: background 0.4s ease;
+}
+
+.chapter-link:last-child { border-right: none; }
+
+.chapter-link:hover,
+.chapter-link:focus-visible {
+  background: rgba(187,169,150,0.04);
+  outline: none;
+}
+
+.chapter-link__num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  transition: transform 0.45s cubic-bezier(.2,.6,.2,1);
+}
+
+.chapter-link:hover .chapter-link__num,
+.chapter-link:focus-visible .chapter-link__num {
+  transform: translateY(-2px);
+}
+
+.chapter-link__rule {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.55;
+  transition: width 0.45s cubic-bezier(.2,.6,.2,1);
+}
+
+.chapter-link:hover .chapter-link__rule,
+.chapter-link:focus-visible .chapter-link__rule {
+  width: 44px;
+  opacity: 0.9;
+}
+
+.chapter-link__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--warm-white);
+}
+
+.chapter-link__title em {
+  font-style: italic;
+  color: var(--gold);
+  opacity: 0.9;
+}
+
+@media (max-width: 720px) {
+  .services-masthead {
+    padding: calc(var(--nav-height) + 3rem) 1.5rem 3rem;
+  }
+  .services-masthead__contents {
+    grid-template-columns: 1fr;
+    margin-top: 3rem;
+  }
+  .chapter-link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1.2rem 1.2rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(187,169,150,0.12);
+  }
+  .chapter-link:last-child { border-bottom: none; }
+  .chapter-link__rule { width: 16px; }
+  .chapter-link:hover .chapter-link__rule { width: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-link__num,
+  .chapter-link__rule { transition: none; }
+  .chapter-link:hover .chapter-link__num { transform: none; }
+}
+
 /* ===== LAYOUT HELPERS ===== */
 .container {
   max-width: var(--max-width);

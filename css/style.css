@@ -982,8 +982,218 @@ p:last-child { margin-bottom: 0; }
 
 /* ===== PRICING TABLE ===== */
 .pricing-section {
-  padding: 6rem 0;
+  padding: 4rem 0 5rem;
 }
+
+/* ===== SERVICE CHAPTERS — editorial photography panels =====
+   Full-bleed hero per category. Roman numeral + gold rule + serif title
+   overlaid on the image with a directional scrim for legibility.
+   Alternating left/right composition creates editorial rhythm. */
+.service-chapter {
+  position: relative;
+  width: 100%;
+  height: clamp(440px, 72vh, 720px);
+  margin: 0 0 0;
+  overflow: hidden;
+  background: var(--dark);
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
+  isolation: isolate;
+}
+
+/* Space around chapters: tight above pricing, generous below.
+   First chapter gets extra top breathing room from .pricing-section padding. */
+.service-chapter + .pricing-wrap { margin-top: 0; }
+.pricing-wrap + .service-chapter { margin-top: 5rem; }
+
+.service-chapter__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  transition: transform 8s ease-out;
+  transform: scale(1.02);
+}
+
+.service-chapter:hover .service-chapter__img {
+  transform: scale(1.06);
+}
+
+/* Directional scrim — denser on the caption side, fading across
+   to let the image breathe on the opposite edge. */
+.service-chapter__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to right,
+      rgba(22,19,16,.78) 0%,
+      rgba(22,19,16,.52) 28%,
+      rgba(22,19,16,.14) 62%,
+      rgba(22,19,16,.02) 100%),
+    linear-gradient(to top,
+      rgba(22,19,16,.55) 0%,
+      rgba(22,19,16,.12) 45%,
+      transparent 80%);
+}
+
+.service-chapter--right .service-chapter__scrim {
+  background:
+    linear-gradient(to left,
+      rgba(22,19,16,.78) 0%,
+      rgba(22,19,16,.52) 28%,
+      rgba(22,19,16,.14) 62%,
+      rgba(22,19,16,.02) 100%),
+    linear-gradient(to top,
+      rgba(22,19,16,.55) 0%,
+      rgba(22,19,16,.12) 45%,
+      transparent 80%);
+}
+
+.service-chapter__caption {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(2.2rem, 6vh, 4rem);
+  left: clamp(1.5rem, 6vw, 5rem);
+  right: auto;
+  max-width: 480px;
+  color: var(--white);
+  text-align: left;
+}
+
+.service-chapter--right .service-chapter__caption {
+  left: auto;
+  right: clamp(1.5rem, 6vw, 5rem);
+  text-align: right;
+}
+
+.service-chapter__numeral {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1;
+  color: var(--gold);
+  letter-spacing: .04em;
+  margin-bottom: .9rem;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: chapterReveal .9s ease-out forwards .15s;
+}
+
+.service-chapter__rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  opacity: .75;
+  margin-bottom: 1.3rem;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: ruleDraw .7s ease-out forwards .35s;
+}
+
+.service-chapter--right .service-chapter__rule {
+  margin-left: auto;
+  transform-origin: right center;
+}
+
+.service-chapter__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4.8vw, 4rem);
+  line-height: 1.02;
+  color: var(--white);
+  margin: 0 0 1.1rem;
+  letter-spacing: -.01em;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: chapterReveal 1s ease-out forwards .45s;
+}
+
+.service-chapter__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+}
+
+.service-chapter__lead {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(.92rem, 1.3vw, 1.02rem);
+  line-height: 1.7;
+  color: rgba(246,244,241,.82);
+  max-width: 380px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: chapterReveal 1s ease-out forwards .65s;
+}
+
+.service-chapter--right .service-chapter__lead {
+  margin-left: auto;
+}
+
+@keyframes chapterReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ruleDraw {
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-chapter__img { transition: none; transform: none; }
+  .service-chapter:hover .service-chapter__img { transform: none; }
+  .service-chapter__numeral,
+  .service-chapter__title,
+  .service-chapter__lead { opacity: 1; transform: none; animation: none; }
+  .service-chapter__rule { transform: scaleX(1); animation: none; }
+}
+
+/* Mobile — keep overlay composition but tighten dimensions.
+   Captions always left-aligned at smaller viewports to avoid edge collisions. */
+@media (max-width: 720px) {
+  .service-chapter {
+    height: clamp(420px, 62vh, 560px);
+  }
+  .service-chapter__caption,
+  .service-chapter--right .service-chapter__caption {
+    left: 1.5rem;
+    right: 1.5rem;
+    max-width: none;
+    text-align: left;
+  }
+  .service-chapter--right .service-chapter__rule { margin-left: 0; }
+  .service-chapter--right .service-chapter__lead  { margin-left: 0; }
+  .service-chapter--right .service-chapter__scrim {
+    background:
+      linear-gradient(to right,
+        rgba(22,19,16,.78) 0%,
+        rgba(22,19,16,.52) 28%,
+        rgba(22,19,16,.14) 62%,
+        rgba(22,19,16,.02) 100%),
+      linear-gradient(to top,
+        rgba(22,19,16,.55) 0%,
+        rgba(22,19,16,.12) 45%,
+        transparent 80%);
+  }
+}
+
+/* Wrapper that re-constrains pricing rows to the original reading width
+   now that .pricing-section no longer has an outer .container. */
+.pricing-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem clamp(1.2rem, 4vw, 2rem) 0;
+}
+
+.pricing-wrap + .pricing-wrap { padding-top: 2rem; }
 
 .pricing-category {
   margin-bottom: 4rem;

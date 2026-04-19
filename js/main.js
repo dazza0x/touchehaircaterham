@@ -56,6 +56,29 @@
     });
   });
 
+  /* ── Scroll-triggered reveals ──
+     Any element with [data-reveal] or [data-reveal-stagger] fades/slides in
+     when it crosses ~12% into the viewport. One-shot: once revealed, we stop
+     observing. Falls back to instant-visible if IntersectionObserver is
+     unavailable. prefers-reduced-motion is handled in CSS (forces visible). */
+  const revealTargets = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
+  if (revealTargets.length) {
+    if (!('IntersectionObserver' in window)) {
+      revealTargets.forEach(function (el) { el.classList.add('is-revealed'); });
+    } else {
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+      revealTargets.forEach(function (el) { revealObserver.observe(el); });
+    }
+  }
+
   /* ── Contact form submission ── */
   const contactForm = document.querySelector('.contact-form');
   if (contactForm) {

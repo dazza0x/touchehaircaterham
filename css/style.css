@@ -1046,6 +1046,64 @@ p:last-child { margin-bottom: 0; }
   .home-service:hover .home-service__media img { transform: scale(1.02); }
 }
 
+/* ===== SCROLL REVEALS =====
+   Small, reusable system. Elements with [data-reveal] fade + slide up when
+   they enter the viewport. Containers with [data-reveal-stagger] cascade
+   their direct children. Honours prefers-reduced-motion (everything visible,
+   no transition). JS lives in main.js as an IntersectionObserver. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.85s cubic-bezier(.2, .6, .2, 1),
+    transform 0.85s cubic-bezier(.2, .6, .2, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Variants for more specific entrances */
+[data-reveal="fade"] { transform: none; }
+[data-reveal="scale"] { transform: scale(0.92); transform-origin: 50% 70%; }
+[data-reveal="scale"].is-revealed { transform: scale(1); }
+[data-reveal="right"] { transform: translate3d(-24px, 0, 0); }
+[data-reveal="right"].is-revealed { transform: translate3d(0, 0, 0); }
+
+/* Stagger: container's direct children cascade on reveal. */
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.75s cubic-bezier(.2, .6, .2, 1),
+    transform 0.75s cubic-bezier(.2, .6, .2, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal-stagger].is-revealed > * {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-reveal-stagger].is-revealed > *:nth-child(1) { transition-delay: 0s;     }
+[data-reveal-stagger].is-revealed > *:nth-child(2) { transition-delay: 0.12s;  }
+[data-reveal-stagger].is-revealed > *:nth-child(3) { transition-delay: 0.24s;  }
+[data-reveal-stagger].is-revealed > *:nth-child(4) { transition-delay: 0.36s;  }
+[data-reveal-stagger].is-revealed > *:nth-child(5) { transition-delay: 0.48s;  }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-revealed,
+  [data-reveal-stagger] > *,
+  [data-reveal-stagger].is-revealed > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* ===== SERVICE CARDS ===== */
 .service-card {
   background: var(--white);
@@ -1173,6 +1231,156 @@ p:last-child { margin-bottom: 0; }
   color: var(--text-light);
   font-size: 0.92rem;
   margin: 0;
+}
+
+/* ===== EDITORIAL PILLARS (homepage "Experience" section) =====
+   Replaces the feature-card pattern with a numbered, editorial list that
+   echoes the services chapters. Paired with a dark "visit card" on the right
+   that concentrates hours + address + booking into one focused moment. */
+.pillars__grid {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: clamp(2.5rem, 5vw, 5rem);
+  margin-top: 3.5rem;
+  align-items: start;
+}
+
+.pillars__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pillar {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: clamp(1.2rem, 2.5vw, 2rem);
+  align-items: start;
+  padding: 2.2rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.pillar:first-child { padding-top: 0; }
+.pillar:last-child { border-bottom: none; padding-bottom: 0; }
+
+.pillar__numeral {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  padding-top: 0.1rem;
+}
+
+.pillar__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 0.8rem;
+  letter-spacing: -0.005em;
+  color: var(--dark);
+}
+
+.pillar__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.pillar__lead {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: var(--text-light);
+  margin: 0;
+  max-width: 52ch;
+  font-weight: 300;
+}
+
+/* Visit card — dark sidebar with gold left-accent */
+.visit-card {
+  background: var(--dark);
+  padding: clamp(2rem, 3.5vw, 2.8rem) clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--warm-white);
+  position: relative;
+  border-left: 3px solid var(--gold);
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.3);
+}
+
+.visit-card .eyebrow {
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+  opacity: 0.9;
+}
+
+.visit-card__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin: 0 0 1.5rem;
+  color: var(--warm-white);
+  line-height: 1;
+  letter-spacing: -0.005em;
+}
+
+.visit-card .hours-table {
+  width: 100%;
+  margin-bottom: 1.8rem;
+}
+
+.visit-card__address {
+  padding: 1.4rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 1.8rem;
+}
+
+.visit-card__street {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--warm-white);
+  margin: 0 0 0.3rem;
+  letter-spacing: 0.01em;
+}
+
+.visit-card__town {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.visit-card__btn {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+.visit-card__phone {
+  display: block;
+  text-align: center;
+  margin-top: 0.9rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+
+.visit-card__phone:hover { color: var(--gold); }
+
+@media (max-width: 960px) {
+  .pillars__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .visit-card { max-width: 480px; margin: 0 auto; width: 100%; }
+}
+
+@media (max-width: 560px) {
+  .pillar { grid-template-columns: 56px 1fr; gap: 1rem; }
+  .pillar__numeral { font-size: 2.1rem; }
 }
 
 /* ===== PRODUCT CARDS ===== */
@@ -1954,20 +2162,151 @@ p:last-child { margin-bottom: 0; }
   flex-wrap: wrap;
 }
 
-/* ===== CTA BAND ===== */
-.cta-band {
-  background: linear-gradient(135deg, var(--dark) 0%, #2a2318 100%);
-  padding: 5rem 0;
+/* ===== CLOSING BAND =====
+   The homepage's closing statement. Treats the CTA as the last page of an
+   editorial spread: a vertical gold rule, a Roman "IV" chapter mark, an
+   oversized italic headline, then the single booking action. The signature
+   at the foot quietly ties it back to the brand. */
+.closing-band {
+  background: var(--dark);
+  padding: clamp(5rem, 10vw, 8rem) 0;
+  position: relative;
+  overflow: hidden;
   text-align: center;
 }
 
-.cta-band h2 { color: var(--white); margin-bottom: 0.8rem; }
-.cta-band p {
-  color: rgba(255,255,255,0.60);
+.closing-band::before {
+  /* Soft atmospheric glow from the base so it doesn't read as a flat band. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(187,169,150,0.14), transparent 58%),
+    radial-gradient(ellipse at 50% -15%, rgba(187,169,150,0.05), transparent 60%);
+  pointer-events: none;
+}
+
+.closing-band__inner {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 2rem);
+}
+
+.closing-band__flourish {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.3rem;
+  margin-bottom: 2.5rem;
+}
+
+.closing-band__numeral {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--gold);
+  opacity: 0.75;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.closing-band__rule {
+  display: block;
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(to bottom, transparent, var(--gold) 45%, var(--gold) 55%, transparent);
+  opacity: 0.65;
+}
+
+.closing-band .eyebrow {
+  color: var(--gold);
+  display: block;
+  margin-bottom: 1.2rem;
+  opacity: 0.85;
+}
+
+.closing-band__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--warm-white);
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.015em;
+}
+
+.closing-band__heading em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.closing-band__lead {
   font-size: 1.05rem;
-  max-width: 500px;
-  margin: 0 auto 2rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.65);
   font-weight: 300;
+  max-width: 460px;
+  margin: 0 auto 2.5rem;
+}
+
+.closing-band__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.2rem);
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.closing-band__secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  transition: border-color 0.35s ease, color 0.35s ease;
+}
+
+.closing-band__secondary svg {
+  transition: transform 0.35s cubic-bezier(.2,.6,.2,1);
+}
+
+.closing-band__secondary:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.closing-band__secondary:hover svg { transform: translateX(4px); }
+
+.closing-band__phone {
+  display: block;
+  color: var(--gold);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.35rem;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: opacity 0.3s ease;
+  margin-bottom: 3rem;
+}
+
+.closing-band__phone:hover { opacity: 0.78; }
+
+.closing-band__signature {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin: 0;
 }
 
 /* ===== LOCATION STRIP ===== */

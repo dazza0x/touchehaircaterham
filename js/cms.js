@@ -27,6 +27,38 @@
   }
 
   // ── Services ──────────────────────────────────────────────────────────────
+  // Chapter metadata — editorial photographic panels shown before the three
+  // primary service categories. Kept here (rather than admin-data.json) so
+  // the admin surface stays focused on prices; aesthetic copy is owned by
+  // the design. Any service category not in this map renders as a plain
+  // heading + price list (e.g. "Treatments & Extensions").
+  const CHAPTER_META = {
+    cutting: {
+      numeral: 'I',
+      side: 'left',
+      img: 'Images/services/cutting-hero.jpg',
+      alt: 'Precision haircut at Touché Hairdressing Caterham',
+      title: 'Cutting <em>&amp; Styling</em>',
+      lead: 'Precision cuts, signature blow-dries &amp; classic gents&rsquo; grooming — tailored to your hair, your face, your life.'
+    },
+    colouring: {
+      numeral: 'II',
+      side: 'right',
+      img: 'Images/services/colour-hero.jpg',
+      alt: 'Hair colour application at Touché Hairdressing Caterham',
+      title: 'Colour <em>&amp; Light</em>',
+      lead: 'From subtle regrowth to hand-painted balayage — expert colour work that enhances, never compromises.'
+    },
+    smoothing: {
+      numeral: 'III',
+      side: 'left',
+      img: 'Images/services/smoothing-hero.jpg',
+      alt: 'Smoothing &amp; keratin treatment at Touché Hairdressing Caterham',
+      title: 'Smooth <em>&amp; Finished</em>',
+      lead: 'The Crown Professional keratin system — up to six months of sleek, frizz-free hair.'
+    }
+  };
+
   function renderServices(services, container) {
     if (!container) return;
     const html = services.map(cat => {
@@ -37,10 +69,36 @@
           </div>
           <div class="pricing-row__price">${item.price}</div>
         </div>`).join('');
+
+      const chapter = CHAPTER_META[cat.id];
+      if (chapter) {
+        // Category with editorial chapter panel — chapter provides the heading,
+        // so the pricing block omits its h2.
+        return `
+          <figure class="service-chapter service-chapter--${chapter.side}" id="${cat.id}">
+            <img class="service-chapter__img" src="${chapter.img}" alt="${chapter.alt}" loading="lazy">
+            <div class="service-chapter__scrim" aria-hidden="true"></div>
+            <figcaption class="service-chapter__caption">
+              <span class="service-chapter__numeral" aria-hidden="true">${chapter.numeral}</span>
+              <span class="service-chapter__rule" aria-hidden="true"></span>
+              <h2 class="service-chapter__title">${chapter.title}</h2>
+              <p class="service-chapter__lead">${chapter.lead}</p>
+            </figcaption>
+          </figure>
+          <div class="pricing-wrap">
+            <div class="pricing-category">
+              ${items}
+            </div>
+          </div>`;
+      }
+
+      // Category without a chapter (e.g. Treatments & Extensions).
       return `
-        <div class="pricing-category" id="${cat.id}">
-          <h2 class="pricing-category__title">${cat.title}</h2>
-          ${items}
+        <div class="pricing-wrap">
+          <div class="pricing-category" id="${cat.id}">
+            <h2 class="pricing-category__title">${cat.title}</h2>
+            ${items}
+          </div>
         </div>`;
     }).join('');
     container.innerHTML = html;

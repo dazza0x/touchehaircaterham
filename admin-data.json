@@ -51,7 +51,7 @@
         {
           "name": "Ladies Cut & Finish",
           "note": "Shampoo, cut and blow dry",
-          "price": "from £40"
+          "price": "from £45"
         },
         {
           "name": "Gents Cut & Finish",
@@ -124,7 +124,7 @@
         {
           "name": "Hair Extensions",
           "note": "Consultation required — price on application",
-          "price": "POA"
+          "price": "from £50 / hour"
         }
       ]
     }

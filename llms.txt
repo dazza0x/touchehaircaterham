@@ -1,0 +1,35 @@
+# Touché Hairdressing
+
+> Independent hair salon in Caterham, Surrey. Established 1985. Cutting, colour, smoothing, treatments and extensions in a luxury, editorial-style space at 11 Station Avenue.
+
+Touché Hairdressing is a long-established independent salon serving Caterham and the wider Surrey area. The team specialises in precision cutting, bespoke colour (balayage, highlights, tonal correction), keratin smoothing systems, bond-building and botanical treatments, and quality hair extensions.
+
+- Address: 11 Station Avenue, Caterham, Surrey, CR3 6LB, United Kingdom
+- Phone: 01883 340771
+- Booking: https://s-iq.co/BookingPortal/dist/?salonid=5d4b7112-81b5-464b-9ccf-8835ad6793a3&tab=contact
+- Founded: 1985
+
+## Core pages
+
+- [Homepage](https://www.touchehaircaterham.com/): Salon overview, signature services, opening times and contact details.
+- [About](https://www.touchehaircaterham.com/about.html): Salon heritage since 1985, team, values and editorial timeline.
+- [Services & prices](https://www.touchehaircaterham.com/services.html): Full pricing for cutting & styling, colour & light, smoothing & finishing, and treatments & extensions.
+- [Contact](https://www.touchehaircaterham.com/contact.html): Address, phone, opening hours, contact form and directions.
+- [News & journal](https://www.touchehaircaterham.com/news/): Trend pieces, product features and salon updates.
+
+## Featured products & treatments
+
+- [Oligo Professionnel](https://www.touchehaircaterham.com/news/oligo-professionnel.html): Botanically-rich professional colour and care system used in-salon.
+- [Organethic Pure Care](https://www.touchehaircaterham.com/news/organethic-pure-care.html): Ethical, sustainable luxury hair care range, available as standalone treatment from £20.
+- [The Crown Professional](https://www.touchehaircaterham.com/news/the-crown-professional.html): Advanced keratin smoothing system, results last up to six months, treatments from £200.
+
+## Recent journal entries
+
+- [Hairdressing in April 2026](https://www.touchehaircaterham.com/news/post.html?slug=hairdressing-in-april-2026): What is shaping hairdressing in April 2026 — sustainable salon practices, treatments and textures.
+- [Touché Spring 2026 Colour Trends focus](https://www.touchehaircaterham.com/news/post.html?slug=touche-spring-2026-colour-trends-focus): Warm, sun-kissed spring 2026 colour direction and how to wear it.
+- [Autumn Trends 2025 — The Cuts & Colours to Know](https://www.touchehaircaterham.com/news/autumn-trends-2025.html): Riviera Bobs, Butterfly Cuts, curtain bangs and balayage for autumn 2025.
+
+## Optional
+
+- [Privacy policy](https://www.touchehaircaterham.com/privacy.html)
+- [XML sitemap](https://www.touchehaircaterham.com/sitemap.xml)

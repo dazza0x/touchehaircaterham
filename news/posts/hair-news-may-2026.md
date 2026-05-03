@@ -8,7 +8,7 @@ readTime: 2 min read
 heroSubtitle: ""
 image: /Images/blog/high-performance-bond-building.png
 ctaTitle: Book an Appointment
-draft: true
+draft: false
 ---
 # What's Happening in Hair: May 2026
 

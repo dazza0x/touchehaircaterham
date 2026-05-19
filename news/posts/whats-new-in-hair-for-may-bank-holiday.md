@@ -5,6 +5,7 @@ category: Trends
 excerpt: Robert rounds up the hair trends worth knowing this May Bank Holiday —
   from soft lived-in colour to the cuts that carry you effortlessly into summer.
 readTime: 2 min read
+image: /Images/blog/oligo-tubes-for-blog.jpg
 ctaTitle: Book an Appointment
 draft: false
 ---

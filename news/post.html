@@ -61,13 +61,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="tel:01883340771" class="btn btn--gold">Call 01883 340771</a>
 </nav>
 
-<!-- ===== PAGE HERO ===== -->
-<header class="page-hero" id="post-hero">
-  <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span> <a href="./">News</a><span>›</span> <span id="breadcrumb-title">Article</span></div>
-  <div class="page-hero__content">
-    <span class="eyebrow" id="post-eyebrow" style="color:var(--gold);"></span>
-    <h1 id="post-title"></h1>
-    <p id="post-subtitle"></p>
+<!-- ===== ARTICLE MASTHEAD =====
+     Same editorial header as the rest of the inner pages. Eyebrow, title
+     and lead are populated from the post data by cms.js below. -->
+<header class="page-masthead" id="post-hero" aria-labelledby="post-title">
+  <span class="page-masthead__watermark" aria-hidden="true">&para;</span>
+
+  <div class="page-masthead__inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span> <a href="./">News</a><span>›</span> <span id="breadcrumb-title">Article</span></div>
+
+    <div class="page-masthead__content" data-reveal>
+      <span class="eyebrow" id="post-eyebrow"></span>
+      <h1 id="post-title" class="page-masthead__title"></h1>
+      <span class="page-masthead__rule" aria-hidden="true"></span>
+      <p class="page-masthead__lead" id="post-subtitle"></p>
+    </div>
   </div>
 </header>
 

@@ -75,13 +75,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="tel:01883340771" class="btn btn--gold">Call 01883 340771</a>
 </nav>
 
-<!-- ===== PAGE HERO ===== -->
-<header class="page-hero page-hero--img" style="background-image:url('../Images/news%20header%201200%20x%20400.jpg')">
-  <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span> News</div>
-  <div class="page-hero__content">
-    <span class="eyebrow" style="color:var(--gold);">From the Salon</span>
-    <h1>News &amp; Hair Trends</h1>
-    <p>Expert insights, product features and the latest looks from our Caterham salon team.</p>
+<!-- ===== NEWS MASTHEAD =====
+     Editorial type-led header, matching about and services. No banner
+     photograph — the article thumbnails below carry the visual weight. -->
+<header class="page-masthead" aria-labelledby="news-hero-heading">
+  <span class="page-masthead__watermark" aria-hidden="true">N</span>
+
+  <div class="page-masthead__inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>›</span> News</div>
+
+    <div class="page-masthead__content" data-reveal>
+      <span class="eyebrow">From the Salon</span>
+      <h1 id="news-hero-heading" class="page-masthead__title">News <em>&amp; Hair Trends</em></h1>
+      <span class="page-masthead__rule" aria-hidden="true"></span>
+      <p class="page-masthead__lead">Expert insights, product features and the latest looks from our Caterham salon team.</p>
+    </div>
   </div>
 </header>
 

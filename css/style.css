@@ -1669,7 +1669,7 @@ p:last-child { margin-bottom: 0; }
 .product-card__logo {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   height: 64px;
   margin-bottom: 1.5rem;
 }

@@ -11,6 +11,7 @@
   function enableEmbeds() {
     document.querySelectorAll('iframe[data-src]').forEach(function (el) {
       el.src = el.getAttribute('data-src');
+      el.style.display = '';
     });
     document.querySelectorAll('script[data-src]').forEach(function (el) {
       var s = document.createElement('script');
@@ -24,8 +25,11 @@
   }
 
   function showPlaceholders() {
+    document.querySelectorAll('iframe[data-src]').forEach(function (el) {
+      if (!el.src) el.style.display = 'none';
+    });
     document.querySelectorAll('.consent-placeholder').forEach(function (el) {
-      el.style.display = '';
+      el.style.display = 'block';
     });
   }
 
@@ -57,6 +61,7 @@
       showPlaceholders();
     } else {
       showBanner();
+      showPlaceholders();
     }
   });
 }());

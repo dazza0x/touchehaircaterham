@@ -1663,6 +1663,25 @@ p:last-child { margin-bottom: 0; }
   transform: scaleX(1);
 }
 
+/* Brand logo lockup. The three logos have different aspect ratios and visual
+   densities, so the box is a fixed height and the image is contained within
+   it — that keeps them optically balanced rather than matching on width. */
+.product-card__logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 64px;
+  margin-bottom: 1.5rem;
+}
+
+.product-card__logo img {
+  max-height: 100%;
+  max-width: 155px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
 .product-card__name {
   font-family: var(--font-serif);
   font-size: 1.25rem;

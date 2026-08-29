@@ -6,6 +6,10 @@
   <title>Admin — Touché Hairdressing</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/x-icon" href="Images/favicon.ico">
+  <!-- Vercel Web Analytics -->
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <!-- End Vercel Web Analytics -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -508,7 +512,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 
 // ──────────────────────────────────────────────────────────────────────────────
 // HOURS TAB
-// ──────────────────────────────────────────────────────────────────────────────
+// ────────���─────────────────────────────────────────────────────────────────────
 function renderHoursTab() {
   const grid = el('hours-editor');
   grid.innerHTML = siteData.hours.map((h, i) => `
